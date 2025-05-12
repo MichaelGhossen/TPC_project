@@ -13,7 +13,11 @@ class UserController extends Controller
     public function show($id)
     {
         $user = User::findOrFail($id);
-        return response()->json($user, 201);
+        return response()->json([
+            'message' => 'User get successfully',
+            'user' => $user,
+            'status'=>'200'
+        ], 200);
     }
     public function update(Request $request, $id)
 {
@@ -22,7 +26,9 @@ class UserController extends Controller
     $user = User::find($id);
 
     if (!$user) {
-        return response()->json(['message' => 'User not found'], 404);
+        return response()->json(['message' => 'User not found',
+        'status'=>'404'
+    ], 404);
     }
 
 
@@ -47,7 +53,8 @@ class UserController extends Controller
 
     return response()->json([
         'message' => 'User updated successfully',
-        'user' => $user
+        'user' => $user,
+        'status'=>'200'
     ], 200);
 }
     public function destroy($id)
@@ -55,7 +62,9 @@ class UserController extends Controller
         $user = User::findOrFail($id);
         $user->delete();
 
-        return response()->json(['message' => 'User deleted successfully'], 201);
+        return response()->json(['message' => 'User deleted successfully',
+        'status'=>'200'
+    ], 200);
     }
 
     public function showAllUsers(Request $request)
@@ -64,15 +73,18 @@ class UserController extends Controller
 
     // Allow only admin to view all users
     if (!$authUser || $authUser->user_role !== 'admin') {
-        return response()->json(['message' => 'Unauthorized'], 403);
+        return response()->json(['message' => 'Unauthorized',
+        'status'=>'403'
+    ], 403);
     }
 
     $users =User::all();
 
     return response()->json([
         'message' => 'All users retrieved successfully',
-        'users' => $users
-    ]);
+        'users' => $users,
+        'status'=>'200'
+    ],200);
 }
 
 
@@ -82,13 +94,17 @@ public function updateUserById(Request $request, $id)
 
     // Only admin can perform this action
     if (!$authUser || $authUser->user_role !== 'admin') {
-        return response()->json(['message' => 'Unauthorized – admin only'], 403);
+        return response()->json(['message' => 'Unauthorized – admin only',
+        'status'=>'403'
+    ], 403);
     }
 
     $user = User::find($id);
 
     if (!$user) {
-        return response()->json(['message' => 'User not found'], 404);
+        return response()->json(['message' => 'User not found',
+        'status'=>'404'
+    ], 404);
     }
 
     $validated = $request->validate([
@@ -112,7 +128,8 @@ public function updateUserById(Request $request, $id)
 
     return response()->json([
         'message' => 'User updated successfully by admin',
-        'user' => $user
+        'user' => $user,
+        'status'=>'200'
     ], 200);
 }
 }

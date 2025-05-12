@@ -28,7 +28,7 @@ class AuthController extends Controller
 
         ]);
 
-        return response()->json(['message' => 'User registered successfully'], 201);
+        return response()->json(['message' => 'User registered successfully','status'=>'200'], 200);
     }
 
     public function login(Request $request)
@@ -38,15 +38,15 @@ class AuthController extends Controller
         $user = User::where('email', $credentials['email'])->first();
 
         if (!$user || !Hash::check($credentials['password'], $user->password)) {
-            return response()->json(['error' => 'Invalid credentials'], 401);
+            return response()->json(['error' => 'Invalid credentials','status'=>'401'], 401);
         }
 
         if (!$user->flag) {
-            return response()->json(['error' => 'Account not activated'], 403);
+            return response()->json(['error' => 'Account not activated','status'=>'403'], 403);
         }
 
         $token = $user->createToken('api_token')->plainTextToken;
 
-        return response()->json(['token' => $token,'message' => 'Account activated' ], 201);
+        return response()->json(['token' => $token,'message' => 'Account activated','status'=>'200'], 200);
     }
 }
