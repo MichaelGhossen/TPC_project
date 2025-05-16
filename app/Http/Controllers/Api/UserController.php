@@ -86,25 +86,25 @@ class UserController extends Controller
         'status'=>'200'
     ],200);
 }
-
-
 public function updateUserById(Request $request, $id)
 {
     $authUser = $request->user();
 
-    // Only admin can perform this action
+    // ✅ Only admin can perform this action
     if (!$authUser || $authUser->user_role !== 'admin') {
-        return response()->json(['message' => 'Unauthorized – admin only',
-        'status'=>'403'
-    ], 403);
+        return response()->json([
+            'message' => 'Unauthorized – admin only',
+            'status'  => '403'
+        ], 403);
     }
 
     $user = User::find($id);
 
     if (!$user) {
-        return response()->json(['message' => 'User not found',
-        'status'=>'404'
-    ], 404);
+        return response()->json([
+            'message' => 'User not found',
+            'status'  => '404'
+        ], 404);
     }
 
     $validated = $request->validate([
@@ -112,13 +112,19 @@ public function updateUserById(Request $request, $id)
         'email'      => ['required', 'email', 'max:255', Rule::unique('users')->ignore($user->id)],
         'phone'      => 'nullable|string|max:20',
         'user_role'  => ['required', Rule::in(['admin', 'accountant', 'warehouse_keeper'])],
+        'flag'       => 'nullable|boolean', // ✅ allow editing flag
         'password'   => 'nullable|string|min:6',
     ]);
 
-    $user->name = $validated['name'];
-    $user->email = $validated['email'];
-    $user->phone = $validated['phone'] ?? $user->phone;
-    $user->user_role = $validated['user_role'];
+    $user->name       = $validated['name'];
+    $user->email      = $validated['email'];
+    $user->phone      = $validated['phone'] ?? $user->phone;
+    $user->user_role  = $validated['user_role'];
+
+    // ✅ Update flag if present
+    if (array_key_exists('flag', $validated)) {
+        $user->flag = $validated['flag'];
+    }
 
     if (!empty($validated['password'])) {
         $user->password = Hash::make($validated['password']);
@@ -128,8 +134,8 @@ public function updateUserById(Request $request, $id)
 
     return response()->json([
         'message' => 'User updated successfully by admin',
-        'user' => $user,
-        'status'=>'200'
+        'user'    => $user,
+        'status'  => '200'
     ], 200);
 }
 }
