@@ -15,35 +15,39 @@ class UserSeeder extends Seeder
     public function run(): void
     {
 
-         // 🟩 Admin: Michael
-         User::create([
-            'name' => 'Michael',
-            'email' => 'michael@gmail.com',
-            'password' => Hash::make('michael123'),
-            'phone' => '0999999999',
-            'user_role' => 'admin',
-            'flag' => true,
-        ]);
+        User::updateOrCreate(
+            ['email' => 'michael@gmail.com'],
+            [
+                'name' => 'Michael',
+                'password' => Hash::make('michael123'),
+                'phone' => '0999999999',
+                'user_role' => 'admin',
+                'flag' => true,
+            ]
+        );
 
         // 🟨 Accountant
-        User::create([
-            'name' => 'Layth',
-            'email' => 'layth@gmail.com',
-            'password' => Hash::make('layth123'),
-            'phone' => '0988888888',
-            'user_role' => 'accountant',
-            'flag' => true,
-        ]);
+        User::updateOrCreate(
+            ['email' => 'layth@gmail.com'],
+            [
+                'name' => 'Layth',
+                'password' => Hash::make('layth123'),
+                'phone' => '0988888888',
+                'user_role' => 'accountant',
+                'flag' => true,
+            ]
+        );
 
         // 🟦 Warehouse Keeper
-        User::create([
-            'name' => 'Ameer',
-            'email' => 'ameer@gmail.com',
-            'password' => Hash::make('ameer123'),
-            'phone' => '0977777777',
-            'user_role' => 'warehouse_keeper',
-            'flag' => true,
-        ]);
-
+        User::updateOrCreate(
+            ['email' => 'ameer@gmail.com'],
+            [
+                'name' => 'Ameer',
+                'password' => Hash::make('ameer123'),
+                'phone' => '0977777777',
+                'user_role' => 'warehouse_keeper',
+                'flag' => true,
+            ]
+        );
     }
 }
