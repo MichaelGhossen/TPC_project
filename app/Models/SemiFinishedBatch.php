@@ -4,8 +4,10 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class ProductPatch extends Model
-{    protected $fillable = [
+class SemiFinishedBatch extends Model
+{
+    protected $primaryKey = 'semi_finished_batch_id';
+    protected $fillable = [
         'user_id',
         'product_id',
         'quantity_in',

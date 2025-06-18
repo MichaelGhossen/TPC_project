@@ -4,25 +4,20 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class ProductSale extends Model
+class DamagedMaterial extends Model
 {
-    protected $primaryKey = 'product_sale_id';
+    protected $primaryKey = 'damaged_material_id';
 
     protected $fillable = [
-        'product_id',
         'semi_finished_batch_id',
         'product_batch_id',
+        'raw_material_batch_id',
         'user_id',
-        'quantity_sold',
-        'unit_price',
-        'customer',
-        'net_profit',
+        'notes',
+        'quantity',
+        'material_type',
+        'lost_cost',
     ];
-
-    public function product()
-    {
-        return $this->belongsTo(Product::class, 'product_id');
-    }
 
     public function semiFinishedBatch()
     {
@@ -32,6 +27,11 @@ class ProductSale extends Model
     public function productBatch()
     {
         return $this->belongsTo(Productpatch::class, 'product_batch_id');
+    }
+
+    public function rawMaterialBatch()
+    {
+        return $this->belongsTo(RawMaterialpatch::class, 'raw_material_batch_id');
     }
 
     public function user()

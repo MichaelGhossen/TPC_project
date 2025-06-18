@@ -11,16 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('products', function (Blueprint $table) {
-            $table->id('product_id'); // Primary Key
+        Schema::create('expense_categories', function (Blueprint $table) {
+            $table->id('expense_category_id');
             $table->string('name');
             $table->text('description')->nullable();
-            $table->decimal('price', 10, 2)->default(0);
-            $table->enum('category', ['semi_finished', 'finished'])->default('finished');
-            $table->decimal('weight_per_unit', 10, 2)->default(0);
-            $table->decimal('minimum_stock_alert', 10, 2)->default(0);
             $table->timestamps();
-            });
+        });
     }
 
     /**
@@ -28,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('products');
+        Schema::dropIfExists('expense_categories');
     }
 };

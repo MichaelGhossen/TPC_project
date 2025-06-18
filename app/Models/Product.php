@@ -14,6 +14,7 @@ class Product extends Model
         'name',
         'description',
         'price',
+        'category',
         'weight_per_unit',
         'minimum_stock_alert',
     ];

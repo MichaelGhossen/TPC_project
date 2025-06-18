@@ -7,7 +7,7 @@ use HasFactory;
 class RawMaterialPatch extends Model
 {
 
-    protected $primaryKey = 'patch_id';
+    protected $primaryKey = 'raw_material_batch_id';
 
     protected $fillable = [
         'user_id',
@@ -23,11 +23,11 @@ class RawMaterialPatch extends Model
 
     public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'user_id');
     }
 
     public function rawMaterial()
     {
-        return $this->belongsTo(RawMaterial::class);
+        return $this->belongsTo(RawMaterial::class, 'raw_material_id');
     }
 }

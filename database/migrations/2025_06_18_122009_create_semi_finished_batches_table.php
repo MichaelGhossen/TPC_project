@@ -11,26 +11,24 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('raw_material_batches', function (Blueprint $table) {
-            $table->id('raw_material_batch_id');
+        Schema::create('semi_finished_batches', function (Blueprint $table) {
+            $table->id('semi_finished_batch_id');
 
             $table->unsignedBigInteger('user_id')->nullable();
-            $table->unsignedBigInteger('raw_material_id');
+            $table->unsignedBigInteger('product_id');
 
             $table->decimal('quantity_in', 10, 2)->default(0);
             $table->decimal('quantity_out', 10, 2)->default(0);
             $table->decimal('quantity_remaining', 10, 2)->default(0);
             $table->decimal('real_cost', 12, 2)->nullable();
-
-            $table->string('payment_method')->nullable();
-            $table->string('supplier')->nullable();
             $table->text('notes')->nullable();
+            $table->enum('status', ['ready', 'needs_reproduction'])->default('ready');
+            $table->integer('reproduction_count')->default(0);
 
             $table->timestamps();
 
-            $table->foreign('user_id')->references(columns: 'id')->on('users')->nullOnDelete();
-            $table->foreign('raw_material_id')->references('raw_material_id')->on('raw_materials')->cascadeOnDelete();
-
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('set null');
+            $table->foreign('product_id')->references('product_id')->on('products')->onDelete('cascade');
         });
     }
 
@@ -39,6 +37,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('raw_material_patches');
+        Schema::dropIfExists('semi_finished_batches');
     }
 };
