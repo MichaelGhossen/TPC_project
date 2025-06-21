@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class ProductPatch extends Model
+class ProductBatch extends Model
 {    protected $fillable = [
         'user_id',
         'product_id',

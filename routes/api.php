@@ -79,3 +79,5 @@ Route::middleware('auth:sanctum')->put('/admin/users/{id}', [UserController::cla
             Route::put('/{id}', [RawMaterialPatchController::class, 'update']);
             Route::delete('/{id}', [RawMaterialPatchController::class, 'destroy']);
         });
+        Route::get('/by-raw-material/{raw_material_id}', [RawMaterialPatchController::class, 'getByRawMaterialId']);
+        Route::get('/search/raw-material-batches', [RawMaterialPatchController::class, 'search']);

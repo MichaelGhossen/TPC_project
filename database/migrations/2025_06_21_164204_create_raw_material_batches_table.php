@@ -10,9 +10,9 @@ return new class extends Migration
      * Run the migrations.
      */
     public function up(): void
-    {
-        Schema::create('raw_material_batches', function (Blueprint $table) {
-            $table->id('raw_material_batch_id');
+    {        Schema::create('raw_material_batches', function (Blueprint $table) {
+
+        $table->id('raw_material_batch_id');
 
             $table->unsignedBigInteger('user_id')->nullable();
             $table->unsignedBigInteger('raw_material_id');
@@ -39,6 +39,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('raw_material_patches');
+        Schema::dropIfExists('raw_material_batches');
     }
 };

@@ -22,6 +22,6 @@ class Conversion extends Model
 
     public function productBatch()
     {
-        return $this->belongsTo(ProductPatch::class, 'product_batch_id');
+        return $this->belongsTo(ProductBatch::class, 'product_batch_id');
     }
 }

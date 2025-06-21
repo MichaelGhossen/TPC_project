@@ -26,12 +26,12 @@ class DamagedMaterial extends Model
 
     public function productBatch()
     {
-        return $this->belongsTo(Productpatch::class, 'product_batch_id');
+        return $this->belongsTo(ProductBatch::class, 'product_batch_id');
     }
 
     public function rawMaterialBatch()
     {
-        return $this->belongsTo(RawMaterialpatch::class, 'raw_material_batch_id');
+        return $this->belongsTo(RawMaterialBatch::class, 'raw_material_batch_id');
     }
 
     public function user()
