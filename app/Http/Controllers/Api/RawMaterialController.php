@@ -8,7 +8,7 @@ use App\Models\RawMaterial;
 
 class RawMaterialController extends Controller
 {
-     // ✅ Get all raw materials
+     // Get all
      public function index()
      {
          return response()->json([
@@ -17,82 +17,133 @@ class RawMaterialController extends Controller
          ]);
      }
 
-     // ✅ Create new raw material
-     public function store(Request $request)
-     {
-         $data = $request->validate([
-             'name' => 'required|string|max:255',
-             'description' => 'nullable|string',
-             'price' => 'required|numeric|min:0',
-             'status' => 'required|in:used,unused',
-             'minimum_stock_alert' => 'nullable|numeric|min:0',
-         ]);
-
-         $material = RawMaterial::create($data);
-
-         return response()->json(['status' => 201, 'message' => 'Created successfully', 'data' => $material]);
-     }
-
-     // ✅ Show specific raw material
+     // Get one
      public function show($id)
      {
          $material = RawMaterial::find($id);
+
          if (!$material) {
-             return response()->json(['status' => 404, 'message' => 'Not found']);
+             return response()->json([
+                 'status' => 404,
+                 'message' => 'Raw material not found'
+             ], 404);
          }
-         return response()->json(['status' => 200, 'data' => $material]);
+
+         return response()->json([
+             'status' => 200,
+             'data' => $material
+         ]);
      }
 
-     // ✅ Update raw material
+     // Store
+     public function store(Request $request)
+     {
+         $validated = $request->validate([
+            'name' => 'required|string|max:255|unique:raw_materials,name',
+            'description' => 'nullable|string',
+             'price' => 'required|numeric|min:0',
+             'status' => 'required|in:used,unused',
+             'minimum_stock_alert' => 'required|integer|min:0'
+         ]);
+
+         $material = RawMaterial::create($validated);
+
+         return response()->json([
+             'status' => 201,
+             'message' => 'Raw material created',
+             'data' => $material
+         ], 201);
+     }
+
+     // Update
      public function update(Request $request, $id)
      {
          $material = RawMaterial::find($id);
+
          if (!$material) {
-             return response()->json(['status' => 404, 'message' => 'Not found']);
+             return response()->json([
+                 'status' => 404,
+                 'message' => 'Raw material not found'
+             ], 404);
          }
 
-         $data = $request->validate([
-             'name' => 'sometimes|string|max:255',
-             'description' => 'nullable|string',
+         $validated = $request->validate([
+            'name' => 'sometimes|string|max:255|unique:raw_materials,name,' . $id . ',raw_material_id',
+            'description' => 'nullable|string',
              'price' => 'sometimes|numeric|min:0',
              'status' => 'sometimes|in:used,unused',
-             'minimum_stock_alert' => 'nullable|numeric|min:0',
+             'minimum_stock_alert' => 'sometimes|integer|min:0'
          ]);
 
-         $material->update($data);
+         $material->update($validated);
 
-         return response()->json(['status' => 200, 'message' => 'Updated', 'data' => $material]);
+         return response()->json([
+             'status' => 200,
+             'message' => 'Raw material updated',
+             'data' => $material
+         ]);
      }
 
-     // ✅ Delete raw material
+     // Delete with constraint
      public function destroy($id)
      {
          $material = RawMaterial::find($id);
+
          if (!$material) {
-             return response()->json(['status' => 404, 'message' => 'Not found']);
+             return response()->json([
+                 'status' => 404,
+                 'message' => 'Raw material not found'
+             ], 404);
+         }
+
+         if ($material->status === 'used') {
+             return response()->json([
+                 'status' => 403,
+                 'message' => 'Cannot delete a used raw material'
+             ], 403);
          }
 
          $material->delete();
-         return response()->json(['status' => 200, 'message' => 'Deleted']);
-     }
 
-     // ✅ Search by name and status
+         return response()->json([
+             'status' => 200,
+             'message' => 'Raw material deleted'
+         ]);
+     }
      public function search(Request $request)
      {
          $query = RawMaterial::query();
 
          if ($request->has('name')) {
-             $query->where('name', 'LIKE', '%' . $request->name . '%');
+             $query->where('name', 'like', '%' . $request->name . '%');
+         }
+
+         if ($request->has('description')) {
+             $query->where('description', 'like', '%' . $request->description . '%');
          }
 
          if ($request->has('status')) {
              $query->where('status', $request->status);
          }
 
+         if ($request->has('price_min')) {
+             $query->where('price', '>=', $request->price_min);
+         }
+
+         if ($request->has('price_max')) {
+             $query->where('price', '<=', $request->price_max);
+         }
+
+         if ($request->has('minimum_stock_alert')) {
+             $query->where('minimum_stock_alert', $request->minimum_stock_alert);
+         }
+
+         $results = $query->get();
+
          return response()->json([
              'status' => 200,
-             'data' => $query->get()
+             'data' => $results
          ]);
      }
 
-}
+     }

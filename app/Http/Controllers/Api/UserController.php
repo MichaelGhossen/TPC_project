@@ -70,14 +70,6 @@ class UserController extends Controller
     public function showAllUsers(Request $request)
 {
     $authUser = $request->user();
-
-    // Allow only admin to view all users
-    if (!$authUser || $authUser->user_role !== 'admin') {
-        return response()->json(['message' => 'Unauthorized',
-        'status'=>'403'
-    ], 403);
-    }
-
     $users =User::all();
 
     return response()->json([
@@ -89,17 +81,7 @@ class UserController extends Controller
 public function updateUserById(Request $request, $id)
 {
     $authUser = $request->user();
-
-    // ✅ Only admin can perform this action
-    if (!$authUser || $authUser->user_role !== 'admin') {
-        return response()->json([
-            'message' => 'Unauthorized – admin only',
-            'status'  => '403'
-        ], 403);
-    }
-
     $user = User::find($id);
-
     if (!$user) {
         return response()->json([
             'message' => 'User not found',

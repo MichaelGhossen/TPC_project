@@ -1,106 +1,92 @@
 <?php
 
 namespace App\Http\Controllers\Api;
-
+use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
 use App\Http\Controllers\Controller;
 use App\Models\Expense;
+use App\Models\ExpenseCategory;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ExpenseController extends Controller
-{
-    public function index()
+{ public function index()
     {
         return response()->json([
             'status' => 200,
-            'message' => 'Expenses retrieved successfully',
-            'data' => Expense::with('user')->get()
-        ], 200);
+            'data' => Expense::all()
+        ]);
     }
 
+    // POST create new expense
     public function store(Request $request)
     {
-        $data = $request->validate([
-            'user_id' => 'required|exists:users,id',
-            'employee_salaries' => 'numeric',
-            'transportation' => 'numeric',
-            'taxes' => 'numeric',
-            'utility_bills' => 'numeric',
-            'phone_bills' => 'numeric',
-            'maintenance' => 'numeric',
-            'administrative_costs' => 'numeric',
-            'other_costs' => 'numeric',
-            'type' => 'required|in:real,estimated'
+        $validated = $request->validate([
+            'expense_category_id' => 'required|exists:expense_categories,expense_category_id',
+            'type' => 'required|in:real,estimated',
+            'amount' => 'required|numeric|min:0',
+            'notes' => 'nullable|string',
+            'user_id' => 'required|exists:users,id'
         ]);
 
-        $expense = Expense::create($data);
+        $currentMonth = Carbon::now()->format('Y-m');
+
+        $count = Expense::where('user_id', $validated['user_id'])
+            ->where('type', $validated['type'])
+            ->whereYear('created_at', Carbon::now()->year)
+            ->whereMonth('created_at', Carbon::now()->month)
+            ->count();
+
+        if ($count >= 1) {
+            return response()->json([
+                'status' => 403,
+                'message' => 'Only one entries allowed per type per month.'
+            ], 403);
+        }
+
+        $expense = Expense::create($validated);
+
         return response()->json([
             'status' => 201,
-            'message' => 'Expense created successfully',
+            'message' => 'Expense created',
             'data' => $expense
-        ], 201);
+        ]);
     }
 
+    // GET specific expense
     public function show($id)
     {
         $expense = Expense::find($id);
         if (!$expense) {
-            return response()->json([
-                'status' => 404,
-                'message' => 'Expense not found'
-            ], 404);
+            return response()->json(['status' => 404, 'message' => 'Not Found'], 404);
         }
-
-        return response()->json([
-            'status' => 200,
-            'message' => 'Expense retrieved successfully',
-            'data' => $expense
-        ]);
+        return response()->json(['status' => 200, 'data' => $expense]);
     }
 
+    // PUT update expense
     public function update(Request $request, $id)
     {
         $expense = Expense::find($id);
-        if (!$expense) {
-            return response()->json([
-                'status' => 404,
-                'message' => 'Expense not found'
-            ], 404);
-        }
+        if (!$expense) return response()->json(['status' => 404, 'message' => 'Not Found'], 404);
 
-        $data = $request->validate([
-            'employee_salaries' => 'numeric',
-            'transportation' => 'numeric',
-            'taxes' => 'numeric',
-            'utility_bills' => 'numeric',
-            'phone_bills' => 'numeric',
-            'maintenance' => 'numeric',
-            'administrative_costs' => 'numeric',
-            'other_costs' => 'numeric',
-            'type' => 'in:real,estimated'
+        $validated = $request->validate([
+            'expense_category_id' => 'sometimes|exists:expense_categories,expense_category_id',
+            'amount' => 'sometimes|numeric|min:0',
+            'notes' => 'nullable|string'
         ]);
 
-        $expense->update($data);
-        return response()->json([
-            'status' => 200,
-            'message' => 'Expense updated successfully',
-            'data' => $expense
-        ]);
+        $expense->update($validated);
+
+        return response()->json(['status' => 200, 'message' => 'Updated', 'data' => $expense]);
     }
 
     public function destroy($id)
     {
         $expense = Expense::find($id);
-        if (!$expense) {
-            return response()->json([
-                'status' => 404,
-                'message' => 'Expense not found'
-            ], 404);
-        }
+        if (!$expense) return response()->json(['status' => 404, 'message' => 'Not Found'], 404);
 
         $expense->delete();
-        return response()->json([
-            'status' => 200,
-            'message' => 'Expense deleted successfully'
-        ]);
+
+        return response()->json(['status' => 200, 'message' => 'Deleted']);
     }
 }

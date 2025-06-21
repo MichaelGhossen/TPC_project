@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('raw_materials', function (Blueprint $table) {
         $table->id('raw_material_id');
-        $table->string('name');
+        $table->string('name')->unique();;
         $table->text('description')->nullable();
         $table->decimal('price', 10, 2)->default(0);
         $table->enum('status', ['used', 'unused'])->default('used');
