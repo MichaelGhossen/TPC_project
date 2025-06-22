@@ -89,4 +89,23 @@ class ExpenseController extends Controller
 
         return response()->json(['status' => 200, 'message' => 'Deleted']);
     }
+    public function getByMonth(Request $request)
+    {
+        $validated = $request->validate([
+            'year' => 'required|integer|min:2000|max:2100',
+            'month' => 'required|integer|min:1|max:12'
+        ]);
+
+        $expenses = Expense::whereYear('created_at', $validated['year'])
+            ->whereMonth('created_at', $validated['month'])
+            ->get();
+
+        return response()->json([
+            'status' => 200,
+            'year' => $validated['year'],
+            'month' => $validated['month'],
+            'data' => $expenses
+        ]);
+    }
+
 }

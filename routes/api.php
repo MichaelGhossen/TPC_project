@@ -81,3 +81,6 @@ Route::middleware('auth:sanctum')->put('/admin/users/{id}', [UserController::cla
         });
         Route::get('/by-raw-material/{raw_material_id}', [RawMaterialPatchController::class, 'getByRawMaterialId']);
         Route::get('/search/raw-material-batches', [RawMaterialPatchController::class, 'search']);
+
+
+        Route::get('/by-month/expenses', [ExpenseController::class, 'getByMonth']);

@@ -21,6 +21,7 @@ class DatabaseSeeder extends Seeder
             ExpenseSeeder::class,
             ProductSeeder::class,
             ProductMaterialSeeder::class,
+            RawMaterialBatchSeeder::class,
 
         ]);
 
