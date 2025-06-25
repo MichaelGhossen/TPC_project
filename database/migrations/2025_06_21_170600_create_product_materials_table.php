@@ -30,6 +30,7 @@ return new class extends Migration
                 ->references('raw_material_id')
                 ->on('raw_materials')
                 ->onDelete('cascade');
+            $table->unique(['product_id', 'raw_material_id']);
         });
     }
 

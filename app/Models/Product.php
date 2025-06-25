@@ -19,4 +19,8 @@ class Product extends Model
         'minimum_stock_alert',
     ];
 
+    public function product_materials()
+    {
+        return $this->hasMany(ProductMaterial::class, 'product_id', 'product_id');
+    }
 }

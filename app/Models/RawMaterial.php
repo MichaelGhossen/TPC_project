@@ -17,4 +17,7 @@ class RawMaterial extends Model
         'status',
         'minimum_stock_alert',
     ];
+    public function product_materials(){
+        return $this->hasMany(ProductMaterial::class, 'raw_material_id', 'raw_material_id');
+}
 }
