@@ -2,11 +2,12 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use HasFactory;
 
 class RawMaterial extends Model
 {
+    use HasFactory; // Fixed missing import
 
     protected $primaryKey = 'raw_material_id';
 
@@ -17,7 +18,12 @@ class RawMaterial extends Model
         'status',
         'minimum_stock_alert',
     ];
-    public function product_materials(){
-        return $this->hasMany(ProductMaterial::class, 'raw_material_id', 'raw_material_id');
-}
+
+    /**
+     * Relationship to product materials where this is a component
+     */
+    public function productMaterials()
+    {
+        return $this->hasMany(ProductMaterial::class, 'raw_material_id');
+    }
 }

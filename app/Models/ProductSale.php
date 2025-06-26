@@ -10,7 +10,6 @@ class ProductSale extends Model
 
     protected $fillable = [
         'product_id',
-        'semi_finished_batch_id',
         'product_batch_id',
         'user_id',
         'quantity_sold',
@@ -22,11 +21,6 @@ class ProductSale extends Model
     public function product()
     {
         return $this->belongsTo(Product::class, 'product_id');
-    }
-
-    public function semiFinishedBatch()
-    {
-        return $this->belongsTo(SemiFinishedBatch::class, 'semi_finished_batch_id');
     }
 
     public function productBatch()

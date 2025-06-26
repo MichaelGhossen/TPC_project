@@ -3,25 +3,32 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Conversion extends Model
 {
     protected $primaryKey = 'conversion_id';
 
     protected $fillable = [
-        'semi_finished_batch_id',
-        'product_batch_id',
+        'raw_material_batch_id',
+        'input_product_batch_id',
+        'output_product_batch_id',
+        'batch_type',
         'quantity_used',
-        'additional_costs',
     ];
 
-    public function semiFinishedBatch()
+    public function rawMaterialBatch()
     {
-        return $this->belongsTo(SemiFinishedBatch::class, 'semi_finished_batch_id');
+        return $this->belongsTo(RawMaterialBatch::class, 'raw_material_batch_id');
     }
 
-    public function productBatch()
+    public function inputProductBatch()
     {
-        return $this->belongsTo(ProductBatch::class, 'product_batch_id');
+        return $this->belongsTo(ProductBatch::class, 'input_product_batch_id', 'product_batch_id');
+    }
+
+    public function outputProductBatch()
+    {
+        return $this->belongsTo(ProductBatch::class, 'output_product_batch_id', 'product_batch_id');
     }
 }

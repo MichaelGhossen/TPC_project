@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('name');
             $table->text('description')->nullable();
             $table->decimal('price', 10, 2)->default(0);
-            $table->enum('category', ['semi_finished', 'finished'])->default('finished');
+            $table->enum('category', ['direct_raw', 'semi_raw','semi_to_finished'])->default('direct_raw');
             $table->decimal('weight_per_unit', 10, 2)->default(0);
             $table->decimal('minimum_stock_alert', 10, 2)->default(0);
             $table->timestamps();

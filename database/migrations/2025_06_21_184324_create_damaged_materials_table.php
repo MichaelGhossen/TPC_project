@@ -14,7 +14,6 @@ return new class extends Migration
         Schema::create('damaged_materials', function (Blueprint $table) {
             $table->id('damaged_material_id');
 
-            $table->unsignedBigInteger('semi_finished_batch_id')->nullable();
             $table->unsignedBigInteger('product_batch_id')->nullable();
             $table->unsignedBigInteger('raw_material_batch_id')->nullable();
             $table->unsignedBigInteger('user_id')->nullable();
@@ -26,7 +25,6 @@ return new class extends Migration
 
             $table->timestamps();
 
-            $table->foreign('semi_finished_batch_id')->references('semi_finished_batch_id')->on('semi_finished_batches')->onDelete('set null');
             $table->foreign('product_batch_id')->references('product_batch_id')->on('product_batches')->onDelete('set null');
             $table->foreign('raw_material_batch_id')->references('raw_material_batch_id')->on('raw_material_batches')->onDelete('set null');
             $table->foreign('user_id')->references(columns: 'id')->on('users')->nullOnDelete();

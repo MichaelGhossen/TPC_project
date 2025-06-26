@@ -65,10 +65,7 @@ Route::get('/search/products', [ProductController::class, 'search']);
 Route::prefix('product-materials')->group(function () {
     Route::get('/', [ProductMaterialController::class, 'index']);
     Route::get('/{id}', [ProductMaterialController::class, 'show']);
-    Route::post('/', [ProductMaterialController::class, 'store']);
-    Route::put('/{id}', [ProductMaterialController::class, 'update']);
-    Route::delete('/{id}', [ProductMaterialController::class, 'destroy']);
-
+    Route::put('/{id}', [ProductMaterialController::class, 'updateByProduct']);
     // Get all materials for a product
     Route::get('/by-product/{product_id}', [ProductMaterialController::class, 'getByProductId']);
 });
