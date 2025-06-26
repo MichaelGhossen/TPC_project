@@ -14,7 +14,7 @@ class ProductMaterialController extends Controller
     {
         return response()->json([
             'status' => 200,
-            'data'   => ProductMaterial::with(['rawMaterial', 'semiProduct'])->get(),
+            'data' => ProductMaterial::with(['rawMaterial', 'semiProduct'])->get(),
         ]);
     }
 
@@ -22,102 +22,58 @@ class ProductMaterialController extends Controller
     public function show($id)
     {
         $item = ProductMaterial::with(['rawMaterial', 'semiProduct'])->find($id);
-        if (! $item) {
+        if (!$item) {
             return response()->json(['status' => 404, 'message' => 'Not found'], 404);
         }
         return response()->json(['status' => 200, 'data' => $item]);
     }
 
-    // PUT /api/products/{product_id}/materials
     public function updateByProduct(Request $request, $product_id)
     {
-        // 1) Find product
         $product = Product::find($product_id);
-        if (! $product) {
+        $product_controller = new ProductController();
+        if (!$product) {
             return response()->json(['status' => 404, 'message' => 'Product not found'], 404);
         }
 
-        // 2) Determine expected component type
-        $isRawBOM = in_array($product->category, ['direct_raw', 'semi_raw']);
+        $componentType = $product_controller->getComponentTypeFromCategory($product->category);
 
-        // 3) Build validation rules based on product.category
-        $rules = [
+        $validated = $request->validate([
             'materials' => 'required|array|min:1',
-            'materials.*.quantity_required_per_unit' => 'required|numeric|min:0.0001',
-        ];
+            'materials.*.component_id' => 'required|integer|min:1|distinct',
+            'materials.*.quantity_required_per_unit' => 'required|numeric|min:0.0001',]);
 
-        if ($isRawBOM) {
-            $rules['materials.*.raw_material_id'] = 'required|exists:raw_materials,raw_material_id';
-        } else {
-            $rules['materials.*.semi_product_id'] = 'required|exists:products,product_id';
+        // Validate existence and correct type
+        $errorBag = $product_controller->validateMaterialComponents($validated['materials'], $componentType);
+        if ($errorBag->errors()->any()) {
+            return response()->json(['status' => 422, 'errors' => $errorBag->errors()], 422);
         }
 
-        $validated = $request->validate($rules);
-
-        // 4) Check for duplicate components
-        $seen = [];
-        foreach ($validated['materials'] as $i => $m) {
-            $key = $isRawBOM
-                ? 'raw_' . $m['raw_material_id']
-                : 'semi_' . $m['semi_product_id'];
-            if (in_array($key, $seen)) {
-                return response()->json([
-                    'status'  => 409,
-                    'message' => "Duplicate component at materials[$i]."
-                ], 409);
-            }
-            $seen[] = $key;
-        }
-
-        // 5) If semi_to_finished, ensure each referenced product is semi_raw
-        if (! $isRawBOM) {
-            foreach ($validated['materials'] as $i => $m) {
-                $semi = Product::find($m['semi_product_id']);
-                if (! $semi || $semi->category !== 'semi_raw') {
-                    return response()->json([
-                        'status'  => 422,
-                        'message' => "Invalid semi-product at materials[$i]. Must be a semi_raw product."
-                    ], 422);
-                }
-            }
-        }
-
-        // 6) Validate total quantity equals product weight_per_unit
-        $totalQty = collect($validated['materials'])->sum('quantity_required_per_unit');
-        if (abs($totalQty - $product->weight_per_unit) > 0.0001) {
+        if (!$product_controller->validateComponentWeightSum($validated['materials'], $product->weight_per_unit)) {
             return response()->json([
-                'status'                  => 422,
-                'message'                 => 'Sum of component quantities must equal product weight_per_unit.',
-                'expected_weight'         => $product->weight_per_unit,
-                'total_material_quantity' => $totalQty,
+                'status' => 422,
+                'message' => 'Sum of component quantities must equal product weight_per_unit.',
+                'expected_weight' => $product->weight_per_unit,
+                'total_material_quantity' => collect($validated['materials'])->sum('quantity_required_per_unit'),
             ], 422);
         }
 
-        // 7) Replace existing BOM entries
+        // Replace BOM
         ProductMaterial::where('product_id', $product_id)->delete();
+        $product_controller->createProductMaterials($product_id, $validated['materials'], $componentType);
 
-        foreach ($validated['materials'] as $m) {
-            ProductMaterial::create([
-                'product_id'                 => $product_id,
-                'component_type'             => $isRawBOM ? 'raw_material' : 'semi_product',
-                'raw_material_id'            => $isRawBOM ? $m['raw_material_id'] : null,
-                'semi_product_id'            => $isRawBOM ? null : $m['semi_product_id'],
-                'quantity_required_per_unit' => $m['quantity_required_per_unit'],
-            ]);
-        }
-
-        // 8) Return updated BOM
         $items = ProductMaterial::with(['rawMaterial', 'semiProduct'])
             ->where('product_id', $product_id)
             ->get();
 
         return response()->json([
-            'status'     => 200,
-            'message'    => 'BOM updated successfully.',
+            'status' => 200,
+            'message' => 'BOM updated successfully.',
             'product_id' => $product_id,
-            'data'       => $items,
+            'data' => $items,
         ]);
     }
+
     // GET /api/products/{product_id}/materials
     public function getByProductId($product_id)
     {
@@ -126,9 +82,9 @@ class ProductMaterialController extends Controller
             ->get();
 
         return response()->json([
-            'status'     => 200,
+            'status' => 200,
             'product_id' => $product_id,
-            'data'       => $items,
+            'data' => $items,
         ]);
     }
 }

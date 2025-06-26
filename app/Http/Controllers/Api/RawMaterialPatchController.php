@@ -15,14 +15,14 @@ class RawMaterialPatchController extends Controller
        {
            return response()->json([
                'status' => 200,
-               'data' => RawMaterialBatch::all()
+               'data' => RawMaterialBatch::with('rawMaterial')->get()
            ]);
        }
 
        // Get one
        public function show($id)
        {
-           $batch = RawMaterialBatch::find($id);
+           $batch = RawMaterialBatch::with('rawMaterial')->find($id);
 
            if (!$batch) {
                return response()->json(['status' => 404, 'message' => 'Not found'], 404);

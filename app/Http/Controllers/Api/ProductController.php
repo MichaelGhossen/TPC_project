@@ -18,7 +18,7 @@ class ProductController extends Controller
     {
         return response()->json([
             'status' => 200,
-            'data' => Product::with('productMaterials')->get(),
+            'data' => Product::with('productMaterials')->get()
         ]);
     }
 
@@ -43,7 +43,6 @@ class ProductController extends Controller
     // POST /api/products
     public function store(Request $request)
     {
-        // 1) Validate main product fields + BOM array
         $validated = $request->validate([
             'name' => 'required|string|max:255|unique:products,name',
             'description' => 'nullable|string',
@@ -51,47 +50,32 @@ class ProductController extends Controller
             'weight_per_unit' => 'required|numeric|min:0',
             'minimum_stock_alert' => 'required|integer|min:0',
             'materials' => 'required|array|min:1',
-            'materials.*.component_id' => 'required|integer|min:1',
+            'materials.*.component_id' => 'required|integer|min:1|distinct',
             'materials.*.quantity_required_per_unit' => 'required|numeric|min:0.0001',
         ]);
-
-        // 2) Determine component_type and existence check
-        $componentType = $validated['category'] === 'semi_to_finished'
-            ? 'semi_product'
-            : 'raw_material';
-
-        $errors = Validator::make([], []);
-        foreach ($validated['materials'] as $i => $m) {
-            if ($componentType === 'raw_material') {
-                if (!RawMaterial::where('raw_material_id', $m['component_id'])->exists()) {
-                    $errors->errors()->add("materials.$i.component_id", 'Invalid raw material');
-                }
-            } else { // semi_product
-                $semi = Product::find($m['component_id']);
-                if (!$semi || $semi->category !== 'semi_raw') {
-                    $errors->errors()->add("materials.$i.component_id", 'Invalid semi-product (must be semi_raw)');
-                }
-            }
-        }
-        if ($errors->errors()->any()) {
+        if ($validated['category'] == 'semi_raw' && floatval($validated['weight_per_unit']) !== 1.0) {
             return response()->json([
                 'status' => 422,
-                'errors' => $errors->errors(),
-            ], 422);
+                'message' => 'Weight per unit must be exactly 1 for semi_raw products.',
+            ]);
         }
 
-        // 3) Ensure total component quantities match weight_per_unit
-        $sum = collect($validated['materials'])->sum('quantity_required_per_unit');
-        if (abs($sum - $validated['weight_per_unit']) > 0.0001) {
+        $componentType = $this->getComponentTypeFromCategory($validated['category']);
+        $errorBag = $this->validateMaterialComponents($validated['materials'], $componentType);
+
+        if ($errorBag->errors()->any()) {
+            return response()->json(['status' => 422, 'errors' => $errorBag->errors()], 422);
+        }
+
+        if (!$this->validateComponentWeightSum($validated['materials'], $validated['weight_per_unit'])) {
             return response()->json([
                 'status' => 422,
                 'message' => 'Sum of component quantities must equal weight_per_unit.',
                 'weight_per_unit' => $validated['weight_per_unit'],
-                'total_material_quantity' => $sum,
+                'total_material_quantity' => collect($validated['materials'])->sum('quantity_required_per_unit'),
             ], 422);
         }
 
-        // 4) Create product
         $product = Product::create([
             'name' => $validated['name'],
             'description' => $validated['description'] ?? null,
@@ -100,22 +84,11 @@ class ProductController extends Controller
             'minimum_stock_alert' => $validated['minimum_stock_alert'],
         ]);
 
-        // 5) Attach each material to BOM
-        foreach ($validated['materials'] as $m) {
-            ProductMaterial::create([
-                'product_id' => $product->product_id,
-                'component_type' => $componentType,
-                'quantity_required_per_unit' => $m['quantity_required_per_unit'],
-                // set the correct FK field:
-                $componentType === 'raw_material'
-                    ? 'raw_material_id'
-                    : 'semi_product_id' => $m['component_id'],
-            ]);
-        }
+        $this->createProductMaterials($product->product_id, $validated['materials'], $componentType);
 
         $componentType === 'semi_product'
-        ? $product->load('productMaterials.semiProduct')
-        : $product->load('productMaterials.rawMaterial');
+            ? $product->load('productMaterials.semiProduct')
+            : $product->load('productMaterials.rawMaterial');
 
         return response()->json([
             'status' => 201,
@@ -125,9 +98,10 @@ class ProductController extends Controller
     }
 
     // PUT /api/products/{id}
-    public function update(Request $request, $id)
+    public function update(Request $request, $id)    //if category or weight changed then the BOM must be changes
     {
-        $product = Product::find($id);
+        $product = Product::with('productMaterials')->find($id);
+
         if (!$product) {
             return response()->json([
                 'status' => 404,
@@ -138,16 +112,67 @@ class ProductController extends Controller
         $validated = $request->validate([
             'name' => "sometimes|string|max:255|unique:products,name,{$id},product_id",
             'description' => 'nullable|string',
+            'category' => 'sometimes|in:direct_raw,semi_raw,semi_to_finished',
             'weight_per_unit' => 'sometimes|numeric|min:0',
             'minimum_stock_alert' => 'sometimes|integer|min:0',
+            'materials' => 'required_with:weight_per_unit,category|array|min:1',
+            'materials.*.component_id' => 'required_with:materials|integer|min:1|distinct',
+            'materials.*.quantity_required_per_unit' => 'required_with:materials|numeric|min:0.0001',
         ]);
 
-        $product->update($validated);
+        $originalCategory = $product->category;
+        $originalWeight = $product->weight_per_unit;
+
+        $newCategory = $validated['category'] ?? $originalCategory;
+        $newWeight = $validated['weight_per_unit'] ?? $originalWeight;
+
+        if ($newCategory === 'semi_raw' && $newWeight !== 1.0) {
+            return response()->json([
+                'status' => 422,
+                'message' => 'For semi_raw products, weight_per_unit must be exactly 1.',
+            ], 422);
+        }
+
+        $categoryChanged = isset($validated['category']) && $validated['category'] !== $originalCategory;
+        $weightChanged = isset($validated['weight_per_unit']) && abs($validated['weight_per_unit'] - $originalWeight) > 0.0001;
+
+        if ($categoryChanged || $weightChanged) {
+            if (!isset($validated['materials'])) {
+                return response()->json([
+                    'status' => 422,
+                    'message' => 'Updating category or weight_per_unit requires materials to be sent.',
+                ], 422);
+            }
+
+            $componentType = $this->getComponentTypeFromCategory($newCategory);
+
+            $errorBag = $this->validateMaterialComponents($validated['materials'], $componentType);
+            if ($errorBag->errors()->any()) {
+                return response()->json(['status' => 422, 'errors' => $errorBag->errors()], 422);
+            }
+
+            if (!$this->validateComponentWeightSum($validated['materials'], $newWeight)) {
+                return response()->json([
+                    'status' => 422,
+                    'message' => 'Sum of component quantities must equal weight_per_unit.',
+                    'expected_weight' => $newWeight,
+                    'total_material_quantity' => collect($validated['materials'])->sum('quantity_required_per_unit'),
+                ], 422);
+            }
+
+            // Update BOM
+            ProductMaterial::where('product_id', $id)->delete();
+            $this->createProductMaterials($id, $validated['materials'], $componentType);
+        }
+
+        // Remove materials from validated before updating the product
+        $productFields = collect($validated)->except('materials')->toArray();
+        $product->update($productFields);
 
         return response()->json([
             'status' => 200,
             'message' => 'Product updated.',
-            'data' => $product,
+            'data' => $product->fresh('productMaterials'),
         ]);
     }
 
@@ -209,9 +234,10 @@ class ProductController extends Controller
             'data' => $results
         ]);
     }
+
     public function updateProductsPrices()
     {
-        $year  = now()->year;
+        $year = now()->year;
         $month = now()->month;
 
         // ——————————————————————————————
@@ -225,9 +251,9 @@ class ProductController extends Controller
                 ->whereMonth('created_at', $month)
                 ->first();
 
-        if (! $setting) {
+        if (!$setting) {
             return response()->json([
-                'status'  => 404,
+                'status' => 404,
                 'message' => "No production setting for {$year}-{$month}.",
             ], 404);
         }
@@ -244,14 +270,14 @@ class ProductController extends Controller
 
         if ($expenses <= 0) {
             return response()->json([
-                'status'  => 422,
+                'status' => 422,
                 'message' => "No expenses for {$year}-{$month}.",
             ], 422);
         }
 
         if ($setting->total_production <= 0) {
             return response()->json([
-                'status'  => 422,
+                'status' => 422,
                 'message' => 'Total production must be > 0.',
             ], 422);
         }
@@ -268,12 +294,12 @@ class ProductController extends Controller
         foreach ($initialProducts as $product) {
             // raw-material cost
             $rawCost = $product->productMaterials
-                ->sum(function($m) {
+                ->sum(function ($m) {
                     return $m->quantity_required_per_unit
                         * $m->rawMaterial->price;
                 });
 
-            $costPrice  = $rawCost + ($unitExpense * $product->weight_per_unit);
+            $costPrice = $rawCost + ($unitExpense * $product->weight_per_unit);
             $finalPrice = $costPrice * (1 + $setting->profit_ratio);
 
             $product->update(['price' => round($finalPrice, 2)]);
@@ -288,12 +314,12 @@ class ProductController extends Controller
         foreach ($finalProducts as $product) {
             // semi-product cost
             $semiCost = $product->productMaterials
-                ->sum(function($m) {
+                ->sum(function ($m) {
                     return $m->quantity_required_per_unit
                         * $m->semiProduct->price;
                 });
 
-            $costPrice  = $semiCost + ($unitExpense * $product->weight_per_unit);
+            $costPrice = $semiCost + ($unitExpense * $product->weight_per_unit);
             $finalPrice = $costPrice * (1 + $setting->profit_ratio);
 
             $product->update(['price' => round($finalPrice, 2)]);
@@ -303,10 +329,55 @@ class ProductController extends Controller
         $all = $initialProducts->merge($finalProducts);
 
         return response()->json([
-            'status'  => 200,
+            'status' => 200,
             'message' => 'Product prices updated successfully.',
-            'data'    => $all,
+            'data' => $all,
         ]);
+    }
+
+    public function getComponentTypeFromCategory($category)
+    {
+        return $category === 'semi_to_finished' ? 'semi_product' : 'raw_material';
+    }
+
+    public function validateMaterialComponents(array $materials, string $componentType)
+    {
+        $errors = Validator::make([], []);
+
+        foreach ($materials as $i => $m) {
+            if ($componentType === 'raw_material') {
+                if (!RawMaterial::where('raw_material_id', $m['component_id'])->exists()) {
+                    $errors->errors()->add("materials.$i." . ($m['component_id']), 'Invalid raw material');
+                }
+            } else {
+                $semiId = $m['component_id'];
+                $semi = Product::find($semiId);
+                if (!$semi || $semi->category !== 'semi_raw') {
+                    $errors->errors()->add("materials.$i." . $m['component_id'], 'Invalid semi-product (must be semi_raw)');
+                }
+            }
+        }
+
+        return $errors;
+    }
+
+    public function validateComponentWeightSum(array $materials, float $expectedWeight): bool
+    {
+        $total = collect($materials)->sum('quantity_required_per_unit');
+        return abs($total - $expectedWeight) <= 0.0001;
+    }
+
+    public function createProductMaterials(int $productId, array $materials, string $componentType)
+    {
+        foreach ($materials as $m) {
+            ProductMaterial::create([
+                'product_id' => $productId,
+                'component_type' => $componentType,
+                'raw_material_id' => $componentType === 'raw_material' ? $m['component_id'] : null,
+                'semi_product_id' => $componentType === 'semi_product' ? $m['component_id'] : null,
+                'quantity_required_per_unit' => $m['quantity_required_per_unit'],
+            ]);
+        }
     }
 
 }
