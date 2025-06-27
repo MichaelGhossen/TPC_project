@@ -32,7 +32,7 @@ class Product extends Model
      */
     public function productMaterials()
     {
-        return $this->hasMany(ProductMaterial::class, 'product_id');
+        return $this->hasMany(ProductMaterial::class, 'product_id','product_id');
     }
 
     /**

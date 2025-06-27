@@ -18,7 +18,9 @@ class ProductPatchController extends Controller
     {
         return response()->json([
             'status' => 200,
-            'data' => ProductBatch::with('product')->get()
+            'data' => ProductBatch::with('product')
+                ->orderBy('created_at', 'desc')
+                ->get()
         ]);
     }
 
@@ -67,6 +69,13 @@ class ProductPatchController extends Controller
         }
         if ($request->has('date_to')) {
             $query->whereDate('created_at', '<=', $request->date_to);
+        }
+        if ($request->has('name')) {
+            $query->where(function ($q) use ($request) {
+                $q->whereHas('product', function ($sub) use ($request) {
+                    $sub->where('name', 'like', '%' . $request->name . '%');
+                });
+            });
         }
 
         $results = $query

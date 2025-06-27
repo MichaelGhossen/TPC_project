@@ -125,7 +125,7 @@ class RawMaterialPatchController extends Controller
 
     public function search(Request $request)
     {
-        $query = RawMaterialBatch::query();
+        $query = RawMaterialBatch::with('rawMaterial');
 
         if ($request->has('raw_material_id')) {
             $query->where('raw_material_id', $request->raw_material_id);
@@ -165,6 +165,13 @@ class RawMaterialPatchController extends Controller
 
         if ($request->has('real_cost_max')) {
             $query->where('real_cost', '<=', $request->real_cost_max);
+        }
+        if ($request->has('name')) {
+            $query->where(function ($q) use ($request) {
+                $q->whereHas('rawMaterial', function ($sub) use ($request) {
+                    $sub->where('name', 'like', '%' . $request->get('name') . '%');
+                });
+            });
         }
 
         $results = $query

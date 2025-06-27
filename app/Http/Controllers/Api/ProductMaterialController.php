@@ -14,7 +14,7 @@ class ProductMaterialController extends Controller
     {
         return response()->json([
             'status' => 200,
-            'data' => ProductMaterial::with(['rawMaterial', 'semiProduct'])->get(),
+            'data' => ProductMaterial::with(['product', 'rawMaterial', 'semiProduct'])->get(),
         ]);
     }
 
@@ -85,6 +85,32 @@ class ProductMaterialController extends Controller
             'status' => 200,
             'product_id' => $product_id,
             'data' => $items,
+        ]);
+    }
+
+    public function search(Request $request)
+    {
+        $query = ProductMaterial::with(['product', 'rawMaterial', 'semiProduct']);
+
+        if ($request->has('component_type')) {
+            $query->where('component_type', $request->get('component_type'));
+        }
+
+        if ($request->has('name')) {
+            $query->where(function ($q) use ($request) {
+                $q->whereHas('product', function ($sub) use ($request) {
+                    $sub->where('name', 'like', '%' . $request->get('name') . '%');
+                })->orWhereHas('rawMaterial', function ($sub) use ($request) {
+                    $sub->where('name', 'like', '%' . $request->get('name') . '%');
+                })->orWhereHas('semiProduct', function ($sub) use ($request) {
+                    $sub->where('name', 'like', '%' . $request->get('name') . '%');
+                });
+            });
+        }
+
+        return response()->json([
+            'status' => 200,
+            'data' => $query->orderBy('created_at', 'desc')->get(),
         ]);
     }
 }

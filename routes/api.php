@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\ConversionController;
 use App\Http\Controllers\Api\ExpenseCategoryController;
 use App\Http\Controllers\Api\ExpenseController;
 use App\Http\Controllers\Api\ProductionSettingController;
@@ -65,6 +66,7 @@ Route::get('/search/products', [ProductController::class, 'search']);
 
 Route::prefix('product-materials')->group(function () {
     Route::get('/', [ProductMaterialController::class, 'index']);
+    Route::get('/search',[ProductMaterialController::class,'search']);
     Route::get('/{id}', [ProductMaterialController::class, 'show']);
     Route::put('/{id}', [ProductMaterialController::class, 'updateByProduct']);
     // Get all materials for a product
@@ -100,4 +102,10 @@ Route::prefix('product-batches')->group(function () {
     Route::put('/{id}', [ProductPatchController::class, 'update']);
     Route::delete('/{id}', [ProductPatchController::class, 'destroy']);
 });
-;
+Route::prefix('conversions')->group(function () {
+    Route::get('/', [ConversionController::class, 'index']);
+    Route::get('/search',[ConversionController::class, 'search']);
+    Route::get('/{id}', [ConversionController::class, 'show']);
+    Route::get('/by-product-batch/{id}', [ConversionController::class, 'getByProductBatchID']);
+});
+

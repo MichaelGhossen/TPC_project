@@ -14,6 +14,7 @@ class ProductionSettingController extends Controller
         return response()->json([
             'status' => 200,
             'data' => ProductionSetting::orderBy('year', 'desc')
+                ->orderBy('year', 'desc')
                 ->orderBy('month', 'desc')
                 ->get()
         ]);
