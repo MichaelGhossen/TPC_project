@@ -15,6 +15,7 @@ class Conversion extends Model
         'output_product_batch_id',
         'batch_type',
         'quantity_used',
+        'cost'
     ];
 
     public function rawMaterialBatch()

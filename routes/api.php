@@ -4,6 +4,7 @@ use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\ExpenseCategoryController;
 use App\Http\Controllers\Api\ExpenseController;
 use App\Http\Controllers\Api\ProductionSettingController;
+use App\Http\Controllers\Api\ProductPatchController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\RawMaterialController;
 use App\Http\Controllers\Api\ProductController;
@@ -58,7 +59,7 @@ Route::prefix('products')->group(function () {
     Route::post('/', [ProductController::class, 'store']);
     Route::put('/{id}', [ProductController::class, 'update']);
     Route::delete('/{id}', [ProductController::class, 'destroy']);
-    Route::post('/update-products-prices',[ProductController::class, 'updateProductsPrices']);
+    Route::post('/update-products-prices', [ProductController::class, 'updateProductsPrices']);
 });
 Route::get('/search/products', [ProductController::class, 'search']);
 
@@ -89,3 +90,14 @@ Route::get('/production-settings/{id}', [ProductionSettingController::class, 'sh
 Route::put('/production-settings/{id}', [ProductionSettingController::class, 'update']);
 Route::delete('/production-settings/{id}', [ProductionSettingController::class, 'destroy']);
 Route::get('by-month/production-settings', [ProductionSettingController::class, 'getByMonth']);
+
+Route::prefix('product-batches')->group(function () {
+    Route::get('/search', [ProductPatchController::class, 'search']);
+    Route::get('/by-product/{product_id}', [ProductPatchController::class, 'getByProductId']);
+    Route::get('/', [ProductPatchController::class, 'index']);
+    Route::get('/{id}', [ProductPatchController::class, 'show']);
+    Route::post('/', [ProductPatchController::class, 'store']);
+    Route::put('/{id}', [ProductPatchController::class, 'update']);
+    Route::delete('/{id}', [ProductPatchController::class, 'destroy']);
+});
+;

@@ -5,7 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 
 class ProductBatch extends Model
-{    protected $fillable = [
+{
+    protected $primaryKey = 'product_batch_id';
+    protected $fillable = [
         'user_id',
         'product_id',
         'quantity_in',

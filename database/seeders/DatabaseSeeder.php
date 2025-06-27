@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\ProductBatch;
 use App\Models\User;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -23,7 +24,9 @@ class DatabaseSeeder extends Seeder
             ProductSeeder::class,
             ProductMaterialSeeder::class,
             RawMaterialBatchSeeder::class,
-            ProductionSettingsSeeder::class
+            ProductionSettingsSeeder::class,
+            ProductBatchSeeder::class,
+
 
         ]);
 
