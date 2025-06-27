@@ -14,6 +14,7 @@ class ProductSale extends Model
         'user_id',
         'quantity_sold',
         'unit_price',
+        'revenue',
         'customer',
         'net_profit',
     ];

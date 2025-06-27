@@ -20,6 +20,7 @@ return new class extends Migration
 
             $table->decimal('quantity_sold', 10, 2)->default(0);
             $table->decimal('unit_price', 10, 2)->default(0);
+            $table->decimal('revenue', 10, 2)->default(0);
             $table->string('customer')->nullable();
             $table->decimal('net_profit', 10, 2)->nullable();
 

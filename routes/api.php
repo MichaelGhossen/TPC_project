@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\ExpenseCategoryController;
 use App\Http\Controllers\Api\ExpenseController;
 use App\Http\Controllers\Api\ProductionSettingController;
 use App\Http\Controllers\Api\ProductPatchController;
+use App\Http\Controllers\Api\ProductSaleController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\RawMaterialController;
 use App\Http\Controllers\Api\ProductController;
@@ -109,3 +110,13 @@ Route::prefix('conversions')->group(function () {
     Route::get('/by-product-batch/{id}', [ConversionController::class, 'getByProductBatchID']);
 });
 
+Route::prefix('/product-sales')->group(function (){
+    Route::get('/', [ProductSaleController::class, 'index']);
+    Route::get('/search',[ProductSaleController::class, 'search']);
+    Route::get('/by-product-id/{id}',[ProductSaleController::class, 'getByProductId']);
+    Route::get('by-product-batch-id/{id}',[ProductSaleController::class, 'getByProductBatchID']);
+    Route::get('/{id}', [ProductSaleController::class, 'show']);
+    Route::post('/', [ProductSaleController::class, 'store']);
+    Route::put('/{id}', [ProductSaleController::class, 'update']);
+    Route::delete('/{id}', [ProductSaleController::class, 'destroy']);
+});

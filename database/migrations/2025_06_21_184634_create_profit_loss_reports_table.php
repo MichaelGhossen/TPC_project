@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('profit_loss_reports', function (Blueprint $table) {
             $table->id('report_id');
 
-            $table->unsignedBigInteger('product_sale_id');
-            $table->unsignedBigInteger('damaged_material_id');
+            $table->unsignedBigInteger('product_sale_id')->nullable();
+            $table->unsignedBigInteger('damaged_material_id')->nullable();
 
             $table->enum('type', ['loss', 'profit']);
             $table->decimal('net_profit_loss', 10, 2);
