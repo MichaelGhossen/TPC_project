@@ -2,11 +2,13 @@
 
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\ConversionController;
+use App\Http\Controllers\Api\DamagedMaterialController;
 use App\Http\Controllers\Api\ExpenseCategoryController;
 use App\Http\Controllers\Api\ExpenseController;
 use App\Http\Controllers\Api\ProductionSettingController;
 use App\Http\Controllers\Api\ProductPatchController;
 use App\Http\Controllers\Api\ProductSaleController;
+use App\Http\Controllers\Api\ProfitLossReportController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\RawMaterialController;
 use App\Http\Controllers\Api\ProductController;
@@ -114,9 +116,25 @@ Route::prefix('/product-sales')->group(function (){
     Route::get('/', [ProductSaleController::class, 'index']);
     Route::get('/search',[ProductSaleController::class, 'search']);
     Route::get('/by-product-id/{id}',[ProductSaleController::class, 'getByProductId']);
-    Route::get('by-product-batch-id/{id}',[ProductSaleController::class, 'getByProductBatchID']);
+    Route::get('by-product-batch-id/{id}',[ProductSaleController::class, 'getByProductBatchId']);
     Route::get('/{id}', [ProductSaleController::class, 'show']);
     Route::post('/', [ProductSaleController::class, 'store']);
     Route::put('/{id}', [ProductSaleController::class, 'update']);
     Route::delete('/{id}', [ProductSaleController::class, 'destroy']);
+});
+Route::prefix('/damaged-materials')->group(function (){
+   Route::get('/', [DamagedMaterialController::class, 'index']);
+   Route::get('/search',[DamagedMaterialController::class, 'search']);
+   Route::get('/by-product-id/{id}',[DamagedMaterialController::class, 'getByProductId']);
+   Route::get('/by-raw-material-id/{id}',[DamagedMaterialController::class, 'getByRawMaterialId']);
+   Route::get('/{id}', [DamagedMaterialController::class, 'show']);
+   Route::post('/', [DamagedMaterialController::class, 'store']);
+   Route::put('/{id}', [DamagedMaterialController::class, 'update']);
+   Route::delete('/{id}', [DamagedMaterialController::class, 'destroy']);
+});
+
+Route::prefix('/profit-loss-report')->group(function (){
+    Route::get('/', [ProfitLossReportController::class, 'index']);
+    Route::get('/search',[ProfitLossReportController::class, 'search']);
+    Route::get('/{id}', [ProfitLossReportController::class, 'show']);
 });
