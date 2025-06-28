@@ -1,8 +1,18 @@
 <?php
 
-use Illuminate\Foundation\Inspiring;
-use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Schedule;
 
-Artisan::command('inspire', function () {
-    $this->comment(Inspiring::quote());
-})->purpose('Display an inspiring quote');
+
+Schedule::command('reports:generate-product-summary --type=monthly')
+    ->everyMinute()
+    ->timezone(config('app.timezone'));
+//Schedule::command('reports:generate-product-summary --type=daily')
+//    ->dailyAt('00:05')
+//    ->timezone(config('app.timezone'));
+
+Schedule::command('reports:generate-product-summary --type=monthly')
+    ->monthlyOn(1, '00:10')
+    ->timezone(config('app.timezone'));
+Schedule::command('reports:generate-product-summary --type=yearly')
+    ->yearlyOn(1, 1, '00:15')
+    ->timezone(config('app.timezone'));

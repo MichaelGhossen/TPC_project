@@ -8,6 +8,7 @@ use App\Http\Controllers\Api\ExpenseController;
 use App\Http\Controllers\Api\ProductionSettingController;
 use App\Http\Controllers\Api\ProductPatchController;
 use App\Http\Controllers\Api\ProductSaleController;
+use App\Http\Controllers\Api\ProductSummaryReportController;
 use App\Http\Controllers\Api\ProfitLossReportController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\RawMaterialController;
@@ -137,4 +138,12 @@ Route::prefix('/profit-loss-report')->group(function (){
     Route::get('/', [ProfitLossReportController::class, 'index']);
     Route::get('/search',[ProfitLossReportController::class, 'search']);
     Route::get('/{id}', [ProfitLossReportController::class, 'show']);
+});
+
+Route::prefix('/product-summary-reports')->group(function (){
+    Route::get('/', [ProductSummaryReportController::class, 'index']);
+    Route::get('/search',[ProductSummaryReportController::class, 'search']);
+    Route::get('/{id}', [ProductSummaryReportController::class, 'show']);
+    Route::put('/refresh-report/{id}', [ProductSummaryReportController::class, 'refreshReport']);
+    Route::put('/refresh-all-reports', [ProductSummaryReportController::class, 'refreshAllReports']);
 });

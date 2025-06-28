@@ -20,13 +20,14 @@ return new class extends Migration
             $table->decimal('quantity_produced', 10, 2)->default(0);
             $table->decimal('quantity_sold', 10, 2)->default(0);
             $table->decimal('total_costs', 12, 2)->default(0);
-            $table->decimal('total_estimated_expences', 12, 2)->default(0);
-            $table->decimal('total_actual_expences', 12, 2)->default(0);
+            $table->decimal('total_estimated_expenses', 12, 2)->default(0);
+            $table->decimal('total_actual_expenses', 12, 2)->default(0);
             $table->decimal('total_income', 12, 2)->default(0);
             $table->decimal('net_profit', 12, 2)->default(0);
 
             $table->enum('type', ['yearly', 'monthly', 'daily']);
             $table->text('notes')->nullable();
+            $table->unique(['product_id', 'type','created_at']);
             $table->timestamps();
         });
     }
