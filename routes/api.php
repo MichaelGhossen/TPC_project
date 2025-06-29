@@ -28,11 +28,11 @@ Route::middleware(['auth:sanctum', 'user.role:admin'])->group(function () {
 
 });
 
-Route::middleware(['auth:sanctum', 'role:accountant'])->group(function () {
+Route::middleware(['auth:sanctum', 'user.role:accountant'])->group(function () {
     // Accountant routes here
 });
 
-Route::middleware(['auth:sanctum', 'role:warehouse_keeper'])->group(function () {
+Route::middleware(['auth:sanctum', 'user.role:warehouse_keeper'])->group(function () {
     // Warehouse keeper routes here
 });
 

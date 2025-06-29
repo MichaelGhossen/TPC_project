@@ -133,23 +133,42 @@ class ProductSummaryReportController extends Controller
         ]);
     }
 
-    public function generateSummaryReportForPeriod(string $type, Carbon $processDate)
+    public function generateSummaryReportForPeriod(string $type, $processDate)
     {
-        $products = Product::all();
-        [$dataStart, , , ] = $this->getPeriodBoundaries($type, $processDate);
+        [$dataStart, , ,] = $this->getPeriodBoundaries($type, $processDate);
+        $expectedCreatedAt = $this->getExpectedCreatedAt($processDate, $type);
 
-        foreach ($products as $product) {
+
+        foreach (Product::all() as $product) {
             $reportData = $this->calculateReportData($product, $type, $processDate);
 
-            ProductSummaryReport::updateOrCreate(
-                [
+            $existingReport = ProductSummaryReport::where('product_id', $product->product_id)
+                ->where('type', $type)
+                ->whereDate('created_at',$expectedCreatedAt)
+                ->first();
+
+            if ($existingReport) {
+                $this->refreshReport($existingReport->report_id);
+            } else {
+                ProductSummaryReport::create(array_merge([
                     'product_id' => $product->product_id,
                     'type' => $type,
-                ],
-                array_merge($reportData, ['updated_at' => now()])
-            );
+                    'created_at' => $expectedCreatedAt,
+                ], $reportData));
+            }
         }
     }
+
+    protected function getExpectedCreatedAt(Carbon $date, string $type): Carbon
+    {
+        return match ($type) {
+            'daily' => $date->copy()->addDay()->startOfDay(),
+            'monthly' => $date->copy()->addMonth()->startOfDay(),
+            'yearly' => $date->copy()->addYear()->startOfDay(),
+            default => throw new \InvalidArgumentException("Invalid type: $type")
+        };
+    }
+
 
     protected function applyReportData(ProductSummaryReport $report)
     {

@@ -3,9 +3,9 @@
 use Illuminate\Support\Facades\Schedule;
 
 
-//Schedule::command('reports:generate-product-summary --type=monthly')
-//    ->everyMinute()
-//    ->timezone(config('app.timezone'));
+Schedule::command('reports:generate-product-summary --type=daily')
+    ->everyMinute()
+    ->timezone(config('app.timezone'));
 Schedule::command('reports:generate-product-summary --type=daily')
     ->dailyAt('00:05')
     ->timezone(config('app.timezone'));
