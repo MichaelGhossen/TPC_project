@@ -18,7 +18,7 @@ class RawMaterialBatchSeeder extends Seeder
             [
                 'user_id' => 1,
                 'raw_material_id' => 1,
-                'quantity_in' => 100,
+                'quantity_in' => 100, // 0 + 100
                 'quantity_out' => 0,
                 'quantity_remaining' => 100,
                 'real_cost' => 100.00,
@@ -31,7 +31,7 @@ class RawMaterialBatchSeeder extends Seeder
             [
                 'user_id' => 2,
                 'raw_material_id' => 1,
-                'quantity_in' => 50,
+                'quantity_in' => 150, // 10 + 140
                 'quantity_out' => 10,
                 'quantity_remaining' => 140,
                 'real_cost' => 50.00,
@@ -44,7 +44,7 @@ class RawMaterialBatchSeeder extends Seeder
             [
                 'user_id' => 3,
                 'raw_material_id' => 1,
-                'quantity_in' => 30,
+                'quantity_in' => 170, // 5 + 165
                 'quantity_out' => 5,
                 'quantity_remaining' => 165,
                 'real_cost' => 30.00,
@@ -59,7 +59,7 @@ class RawMaterialBatchSeeder extends Seeder
             [
                 'user_id' => 2,
                 'raw_material_id' => 2,
-                'quantity_in' => 110,
+                'quantity_in' => 110, // 0 + 110
                 'quantity_out' => 0,
                 'quantity_remaining' => 110,
                 'real_cost' => 121.00,
@@ -72,7 +72,7 @@ class RawMaterialBatchSeeder extends Seeder
             [
                 'user_id' => 3,
                 'raw_material_id' => 2,
-                'quantity_in' => 50,
+                'quantity_in' => 160, // 10 + 150
                 'quantity_out' => 10,
                 'quantity_remaining' => 150,
                 'real_cost' => 55.00,
@@ -85,7 +85,7 @@ class RawMaterialBatchSeeder extends Seeder
             [
                 'user_id' => 1,
                 'raw_material_id' => 2,
-                'quantity_in' => 30,
+                'quantity_in' => 180, // 5 + 175
                 'quantity_out' => 5,
                 'quantity_remaining' => 175,
                 'real_cost' => 33.00,
@@ -100,7 +100,7 @@ class RawMaterialBatchSeeder extends Seeder
             [
                 'user_id' => 3,
                 'raw_material_id' => 3,
-                'quantity_in' => 120,
+                'quantity_in' => 120, // 0 + 120
                 'quantity_out' => 0,
                 'quantity_remaining' => 120,
                 'real_cost' => 144.00,
@@ -113,7 +113,7 @@ class RawMaterialBatchSeeder extends Seeder
             [
                 'user_id' => 1,
                 'raw_material_id' => 3,
-                'quantity_in' => 50,
+                'quantity_in' => 170, // 10 + 160
                 'quantity_out' => 10,
                 'quantity_remaining' => 160,
                 'real_cost' => 60.00,
@@ -126,7 +126,7 @@ class RawMaterialBatchSeeder extends Seeder
             [
                 'user_id' => 2,
                 'raw_material_id' => 3,
-                'quantity_in' => 30,
+                'quantity_in' => 190, // 5 + 185
                 'quantity_out' => 5,
                 'quantity_remaining' => 185,
                 'real_cost' => 36.00,
@@ -141,7 +141,7 @@ class RawMaterialBatchSeeder extends Seeder
             [
                 'user_id' => 1,
                 'raw_material_id' => 4,
-                'quantity_in' => 130,
+                'quantity_in' => 130, // 0 + 130
                 'quantity_out' => 0,
                 'quantity_remaining' => 130,
                 'real_cost' => 169.00,
@@ -154,7 +154,7 @@ class RawMaterialBatchSeeder extends Seeder
             [
                 'user_id' => 2,
                 'raw_material_id' => 4,
-                'quantity_in' => 50,
+                'quantity_in' => 180, // 10 + 170
                 'quantity_out' => 10,
                 'quantity_remaining' => 170,
                 'real_cost' => 65.00,
@@ -167,7 +167,7 @@ class RawMaterialBatchSeeder extends Seeder
             [
                 'user_id' => 3,
                 'raw_material_id' => 4,
-                'quantity_in' => 30,
+                'quantity_in' => 200, // 5 + 195
                 'quantity_out' => 5,
                 'quantity_remaining' => 195,
                 'real_cost' => 39.00,
@@ -182,7 +182,7 @@ class RawMaterialBatchSeeder extends Seeder
             [
                 'user_id' => 2,
                 'raw_material_id' => 5,
-                'quantity_in' => 140,
+                'quantity_in' => 140, // 0 + 140
                 'quantity_out' => 0,
                 'quantity_remaining' => 140,
                 'real_cost' => 196.00,
@@ -195,7 +195,7 @@ class RawMaterialBatchSeeder extends Seeder
             [
                 'user_id' => 3,
                 'raw_material_id' => 5,
-                'quantity_in' => 50,
+                'quantity_in' => 190, // 10 + 180
                 'quantity_out' => 10,
                 'quantity_remaining' => 180,
                 'real_cost' => 70.00,
@@ -208,7 +208,7 @@ class RawMaterialBatchSeeder extends Seeder
             [
                 'user_id' => 1,
                 'raw_material_id' => 5,
-                'quantity_in' => 30,
+                'quantity_in' => 210, // 5 + 205
                 'quantity_out' => 5,
                 'quantity_remaining' => 205,
                 'real_cost' => 42.00,
@@ -223,7 +223,7 @@ class RawMaterialBatchSeeder extends Seeder
             [
                 'user_id' => 3,
                 'raw_material_id' => 6,
-                'quantity_in' => 150,
+                'quantity_in' => 150, // 0 + 150
                 'quantity_out' => 0,
                 'quantity_remaining' => 150,
                 'real_cost' => 225.00,
@@ -236,7 +236,7 @@ class RawMaterialBatchSeeder extends Seeder
             [
                 'user_id' => 1,
                 'raw_material_id' => 6,
-                'quantity_in' => 50,
+                'quantity_in' => 200, // 10 + 190
                 'quantity_out' => 10,
                 'quantity_remaining' => 190,
                 'real_cost' => 75.00,
@@ -249,7 +249,7 @@ class RawMaterialBatchSeeder extends Seeder
             [
                 'user_id' => 2,
                 'raw_material_id' => 6,
-                'quantity_in' => 30,
+                'quantity_in' => 220, // 5 + 215
                 'quantity_out' => 5,
                 'quantity_remaining' => 215,
                 'real_cost' => 45.00,
@@ -264,7 +264,7 @@ class RawMaterialBatchSeeder extends Seeder
             [
                 'user_id' => 1,
                 'raw_material_id' => 7,
-                'quantity_in' => 160,
+                'quantity_in' => 160, // 0 + 160
                 'quantity_out' => 0,
                 'quantity_remaining' => 160,
                 'real_cost' => 256.00,
@@ -277,7 +277,7 @@ class RawMaterialBatchSeeder extends Seeder
             [
                 'user_id' => 2,
                 'raw_material_id' => 7,
-                'quantity_in' => 50,
+                'quantity_in' => 210, // 10 + 200
                 'quantity_out' => 10,
                 'quantity_remaining' => 200,
                 'real_cost' => 80.00,
@@ -290,7 +290,7 @@ class RawMaterialBatchSeeder extends Seeder
             [
                 'user_id' => 3,
                 'raw_material_id' => 7,
-                'quantity_in' => 30,
+                'quantity_in' => 230, // 5 + 225
                 'quantity_out' => 5,
                 'quantity_remaining' => 225,
                 'real_cost' => 48.00,
@@ -305,7 +305,7 @@ class RawMaterialBatchSeeder extends Seeder
             [
                 'user_id' => 2,
                 'raw_material_id' => 8,
-                'quantity_in' => 170,
+                'quantity_in' => 170, // 0 + 170
                 'quantity_out' => 0,
                 'quantity_remaining' => 170,
                 'real_cost' => 289.00,
@@ -318,7 +318,7 @@ class RawMaterialBatchSeeder extends Seeder
             [
                 'user_id' => 3,
                 'raw_material_id' => 8,
-                'quantity_in' => 50,
+                'quantity_in' => 220, // 10 + 210
                 'quantity_out' => 10,
                 'quantity_remaining' => 210,
                 'real_cost' => 85.00,
@@ -331,7 +331,7 @@ class RawMaterialBatchSeeder extends Seeder
             [
                 'user_id' => 1,
                 'raw_material_id' => 8,
-                'quantity_in' => 30,
+                'quantity_in' => 240, // 5 + 235
                 'quantity_out' => 5,
                 'quantity_remaining' => 235,
                 'real_cost' => 51.00,
@@ -346,7 +346,7 @@ class RawMaterialBatchSeeder extends Seeder
             [
                 'user_id' => 3,
                 'raw_material_id' => 9,
-                'quantity_in' => 180,
+                'quantity_in' => 180, // 0 + 180
                 'quantity_out' => 0,
                 'quantity_remaining' => 180,
                 'real_cost' => 324.00,
@@ -359,7 +359,7 @@ class RawMaterialBatchSeeder extends Seeder
             [
                 'user_id' => 1,
                 'raw_material_id' => 9,
-                'quantity_in' => 50,
+                'quantity_in' => 230, // 10 + 220
                 'quantity_out' => 10,
                 'quantity_remaining' => 220,
                 'real_cost' => 90.00,
@@ -372,7 +372,7 @@ class RawMaterialBatchSeeder extends Seeder
             [
                 'user_id' => 2,
                 'raw_material_id' => 9,
-                'quantity_in' => 30,
+                'quantity_in' => 250, // 5 + 245
                 'quantity_out' => 5,
                 'quantity_remaining' => 245,
                 'real_cost' => 54.00,
@@ -387,7 +387,7 @@ class RawMaterialBatchSeeder extends Seeder
             [
                 'user_id' => 1,
                 'raw_material_id' => 10,
-                'quantity_in' => 190,
+                'quantity_in' => 190, // 0 + 190
                 'quantity_out' => 0,
                 'quantity_remaining' => 190,
                 'real_cost' => 361.00,
@@ -400,7 +400,7 @@ class RawMaterialBatchSeeder extends Seeder
             [
                 'user_id' => 2,
                 'raw_material_id' => 10,
-                'quantity_in' => 50,
+                'quantity_in' => 240, // 10 + 230
                 'quantity_out' => 10,
                 'quantity_remaining' => 230,
                 'real_cost' => 95.00,
@@ -413,7 +413,7 @@ class RawMaterialBatchSeeder extends Seeder
             [
                 'user_id' => 3,
                 'raw_material_id' => 10,
-                'quantity_in' => 30,
+                'quantity_in' => 260, // 5 + 255
                 'quantity_out' => 5,
                 'quantity_remaining' => 255,
                 'real_cost' => 57.00,
@@ -428,7 +428,7 @@ class RawMaterialBatchSeeder extends Seeder
             [
                 'user_id' => 2,
                 'raw_material_id' => 11,
-                'quantity_in' => 200,
+                'quantity_in' => 200, // 0 + 200
                 'quantity_out' => 0,
                 'quantity_remaining' => 200,
                 'real_cost' => 400.00,
@@ -441,7 +441,7 @@ class RawMaterialBatchSeeder extends Seeder
             [
                 'user_id' => 3,
                 'raw_material_id' => 11,
-                'quantity_in' => 50,
+                'quantity_in' => 250, // 10 + 240
                 'quantity_out' => 10,
                 'quantity_remaining' => 240,
                 'real_cost' => 100.00,
@@ -454,7 +454,7 @@ class RawMaterialBatchSeeder extends Seeder
             [
                 'user_id' => 1,
                 'raw_material_id' => 11,
-                'quantity_in' => 30,
+                'quantity_in' => 270, // 5 + 265
                 'quantity_out' => 5,
                 'quantity_remaining' => 265,
                 'real_cost' => 60.00,
@@ -469,7 +469,7 @@ class RawMaterialBatchSeeder extends Seeder
             [
                 'user_id' => 3,
                 'raw_material_id' => 12,
-                'quantity_in' => 210,
+                'quantity_in' => 210, // 0 + 210
                 'quantity_out' => 0,
                 'quantity_remaining' => 210,
                 'real_cost' => 441.00,
@@ -482,7 +482,7 @@ class RawMaterialBatchSeeder extends Seeder
             [
                 'user_id' => 1,
                 'raw_material_id' => 12,
-                'quantity_in' => 50,
+                'quantity_in' => 260, // 10 + 250
                 'quantity_out' => 10,
                 'quantity_remaining' => 250,
                 'real_cost' => 105.00,
@@ -495,7 +495,7 @@ class RawMaterialBatchSeeder extends Seeder
             [
                 'user_id' => 2,
                 'raw_material_id' => 12,
-                'quantity_in' => 30,
+                'quantity_in' => 280, // 5 + 275
                 'quantity_out' => 5,
                 'quantity_remaining' => 275,
                 'real_cost' => 63.00,
@@ -510,7 +510,7 @@ class RawMaterialBatchSeeder extends Seeder
             [
                 'user_id' => 1,
                 'raw_material_id' => 13,
-                'quantity_in' => 220,
+                'quantity_in' => 220, // 0 + 220
                 'quantity_out' => 0,
                 'quantity_remaining' => 220,
                 'real_cost' => 484.00,
@@ -523,7 +523,7 @@ class RawMaterialBatchSeeder extends Seeder
             [
                 'user_id' => 2,
                 'raw_material_id' => 13,
-                'quantity_in' => 50,
+                'quantity_in' => 270, // 10 + 260
                 'quantity_out' => 10,
                 'quantity_remaining' => 260,
                 'real_cost' => 110.00,
@@ -536,7 +536,7 @@ class RawMaterialBatchSeeder extends Seeder
             [
                 'user_id' => 3,
                 'raw_material_id' => 13,
-                'quantity_in' => 30,
+                'quantity_in' => 290, // 5 + 285
                 'quantity_out' => 5,
                 'quantity_remaining' => 285,
                 'real_cost' => 66.00,
@@ -551,7 +551,7 @@ class RawMaterialBatchSeeder extends Seeder
             [
                 'user_id' => 2,
                 'raw_material_id' => 14,
-                'quantity_in' => 230,
+                'quantity_in' => 230, // 0 + 230
                 'quantity_out' => 0,
                 'quantity_remaining' => 230,
                 'real_cost' => 529.00,
@@ -564,7 +564,7 @@ class RawMaterialBatchSeeder extends Seeder
             [
                 'user_id' => 3,
                 'raw_material_id' => 14,
-                'quantity_in' => 50,
+                'quantity_in' => 280, // 10 + 270
                 'quantity_out' => 10,
                 'quantity_remaining' => 270,
                 'real_cost' => 115.00,
@@ -577,7 +577,7 @@ class RawMaterialBatchSeeder extends Seeder
             [
                 'user_id' => 1,
                 'raw_material_id' => 14,
-                'quantity_in' => 30,
+                'quantity_in' => 300, // 5 + 295
                 'quantity_out' => 5,
                 'quantity_remaining' => 295,
                 'real_cost' => 69.00,
@@ -592,7 +592,7 @@ class RawMaterialBatchSeeder extends Seeder
             [
                 'user_id' => 3,
                 'raw_material_id' => 15,
-                'quantity_in' => 240,
+                'quantity_in' => 240, // 0 + 240
                 'quantity_out' => 0,
                 'quantity_remaining' => 240,
                 'real_cost' => 576.00,
@@ -605,7 +605,7 @@ class RawMaterialBatchSeeder extends Seeder
             [
                 'user_id' => 1,
                 'raw_material_id' => 15,
-                'quantity_in' => 50,
+                'quantity_in' => 290, // 10 + 280
                 'quantity_out' => 10,
                 'quantity_remaining' => 280,
                 'real_cost' => 120.00,
@@ -618,7 +618,7 @@ class RawMaterialBatchSeeder extends Seeder
             [
                 'user_id' => 2,
                 'raw_material_id' => 15,
-                'quantity_in' => 30,
+                'quantity_in' => 310, // 5 + 305
                 'quantity_out' => 5,
                 'quantity_remaining' => 305,
                 'real_cost' => 72.00,
@@ -633,7 +633,7 @@ class RawMaterialBatchSeeder extends Seeder
             [
                 'user_id' => 1,
                 'raw_material_id' => 16,
-                'quantity_in' => 250,
+                'quantity_in' => 250, // 0 + 250
                 'quantity_out' => 0,
                 'quantity_remaining' => 250,
                 'real_cost' => 625.00,
@@ -646,7 +646,7 @@ class RawMaterialBatchSeeder extends Seeder
             [
                 'user_id' => 2,
                 'raw_material_id' => 16,
-                'quantity_in' => 50,
+                'quantity_in' => 300, // 10 + 290
                 'quantity_out' => 10,
                 'quantity_remaining' => 290,
                 'real_cost' => 125.00,
@@ -659,7 +659,7 @@ class RawMaterialBatchSeeder extends Seeder
             [
                 'user_id' => 3,
                 'raw_material_id' => 16,
-                'quantity_in' => 30,
+                'quantity_in' => 320, // 5 + 315
                 'quantity_out' => 5,
                 'quantity_remaining' => 315,
                 'real_cost' => 75.00,
@@ -674,7 +674,7 @@ class RawMaterialBatchSeeder extends Seeder
             [
                 'user_id' => 2,
                 'raw_material_id' => 17,
-                'quantity_in' => 260,
+                'quantity_in' => 260, // 0 + 260
                 'quantity_out' => 0,
                 'quantity_remaining' => 260,
                 'real_cost' => 676.00,
@@ -687,7 +687,7 @@ class RawMaterialBatchSeeder extends Seeder
             [
                 'user_id' => 3,
                 'raw_material_id' => 17,
-                'quantity_in' => 50,
+                'quantity_in' => 310, // 10 + 300
                 'quantity_out' => 10,
                 'quantity_remaining' => 300,
                 'real_cost' => 130.00,
@@ -700,7 +700,7 @@ class RawMaterialBatchSeeder extends Seeder
             [
                 'user_id' => 1,
                 'raw_material_id' => 17,
-                'quantity_in' => 30,
+                'quantity_in' => 330, // 5 + 325
                 'quantity_out' => 5,
                 'quantity_remaining' => 325,
                 'real_cost' => 78.00,
@@ -715,7 +715,7 @@ class RawMaterialBatchSeeder extends Seeder
             [
                 'user_id' => 3,
                 'raw_material_id' => 18,
-                'quantity_in' => 270,
+                'quantity_in' => 270, // 0 + 270
                 'quantity_out' => 0,
                 'quantity_remaining' => 270,
                 'real_cost' => 729.00,
@@ -728,7 +728,7 @@ class RawMaterialBatchSeeder extends Seeder
             [
                 'user_id' => 1,
                 'raw_material_id' => 18,
-                'quantity_in' => 50,
+                'quantity_in' => 320, // 10 + 310
                 'quantity_out' => 10,
                 'quantity_remaining' => 310,
                 'real_cost' => 135.00,
@@ -741,7 +741,7 @@ class RawMaterialBatchSeeder extends Seeder
             [
                 'user_id' => 2,
                 'raw_material_id' => 18,
-                'quantity_in' => 30,
+                'quantity_in' => 340, // 5 + 335
                 'quantity_out' => 5,
                 'quantity_remaining' => 335,
                 'real_cost' => 81.00,
@@ -756,7 +756,7 @@ class RawMaterialBatchSeeder extends Seeder
             [
                 'user_id' => 1,
                 'raw_material_id' => 19,
-                'quantity_in' => 280,
+                'quantity_in' => 280, // 0 + 280
                 'quantity_out' => 0,
                 'quantity_remaining' => 280,
                 'real_cost' => 784.00,
@@ -769,7 +769,7 @@ class RawMaterialBatchSeeder extends Seeder
             [
                 'user_id' => 2,
                 'raw_material_id' => 19,
-                'quantity_in' => 50,
+                'quantity_in' => 330, // 10 + 320
                 'quantity_out' => 10,
                 'quantity_remaining' => 320,
                 'real_cost' => 140.00,
@@ -782,7 +782,7 @@ class RawMaterialBatchSeeder extends Seeder
             [
                 'user_id' => 3,
                 'raw_material_id' => 19,
-                'quantity_in' => 30,
+                'quantity_in' => 350, // 5 + 345
                 'quantity_out' => 5,
                 'quantity_remaining' => 345,
                 'real_cost' => 84.00,
@@ -797,7 +797,7 @@ class RawMaterialBatchSeeder extends Seeder
             [
                 'user_id' => 2,
                 'raw_material_id' => 20,
-                'quantity_in' => 290,
+                'quantity_in' => 290, // 0 + 290
                 'quantity_out' => 0,
                 'quantity_remaining' => 290,
                 'real_cost' => 841.00,
@@ -810,7 +810,7 @@ class RawMaterialBatchSeeder extends Seeder
             [
                 'user_id' => 3,
                 'raw_material_id' => 20,
-                'quantity_in' => 50,
+                'quantity_in' => 340, // 10 + 330
                 'quantity_out' => 10,
                 'quantity_remaining' => 330,
                 'real_cost' => 145.00,
@@ -823,7 +823,7 @@ class RawMaterialBatchSeeder extends Seeder
             [
                 'user_id' => 1,
                 'raw_material_id' => 20,
-                'quantity_in' => 30,
+                'quantity_in' => 360, // 5 + 355
                 'quantity_out' => 5,
                 'quantity_remaining' => 355,
                 'real_cost' => 87.00,
@@ -838,7 +838,7 @@ class RawMaterialBatchSeeder extends Seeder
             [
                 'user_id' => 3,
                 'raw_material_id' => 21,
-                'quantity_in' => 300,
+                'quantity_in' => 300, // 0 + 300
                 'quantity_out' => 0,
                 'quantity_remaining' => 300,
                 'real_cost' => 900.00,
@@ -851,7 +851,7 @@ class RawMaterialBatchSeeder extends Seeder
             [
                 'user_id' => 1,
                 'raw_material_id' => 21,
-                'quantity_in' => 50,
+                'quantity_in' => 350, // 10 + 340
                 'quantity_out' => 10,
                 'quantity_remaining' => 340,
                 'real_cost' => 150.00,
@@ -864,7 +864,7 @@ class RawMaterialBatchSeeder extends Seeder
             [
                 'user_id' => 2,
                 'raw_material_id' => 21,
-                'quantity_in' => 30,
+                'quantity_in' => 370, // 5 + 365
                 'quantity_out' => 5,
                 'quantity_remaining' => 365,
                 'real_cost' => 90.00,
@@ -879,7 +879,7 @@ class RawMaterialBatchSeeder extends Seeder
             [
                 'user_id' => 1,
                 'raw_material_id' => 22,
-                'quantity_in' => 200,
+                'quantity_in' => 200, // 0 + 200
                 'quantity_out' => 0,
                 'quantity_remaining' => 200,
                 'real_cost' => 440.00,
@@ -892,7 +892,7 @@ class RawMaterialBatchSeeder extends Seeder
             [
                 'user_id' => 2,
                 'raw_material_id' => 22,
-                'quantity_in' => 50,
+                'quantity_in' => 250, // 10 + 240
                 'quantity_out' => 10,
                 'quantity_remaining' => 240,
                 'real_cost' => 110.00,
@@ -905,7 +905,7 @@ class RawMaterialBatchSeeder extends Seeder
             [
                 'user_id' => 3,
                 'raw_material_id' => 22,
-                'quantity_in' => 30,
+                'quantity_in' => 270, // 5 + 265
                 'quantity_out' => 5,
                 'quantity_remaining' => 265,
                 'real_cost' => 66.00,
@@ -920,7 +920,7 @@ class RawMaterialBatchSeeder extends Seeder
             [
                 'user_id' => 2,
                 'raw_material_id' => 23,
-                'quantity_in' => 210,
+                'quantity_in' => 210, // 0 + 210
                 'quantity_out' => 0,
                 'quantity_remaining' => 210,
                 'real_cost' => 462.00,
@@ -933,7 +933,7 @@ class RawMaterialBatchSeeder extends Seeder
             [
                 'user_id' => 3,
                 'raw_material_id' => 23,
-                'quantity_in' => 50,
+                'quantity_in' => 260, // 10 + 250
                 'quantity_out' => 10,
                 'quantity_remaining' => 250,
                 'real_cost' => 110.00,
@@ -946,7 +946,7 @@ class RawMaterialBatchSeeder extends Seeder
             [
                 'user_id' => 1,
                 'raw_material_id' => 23,
-                'quantity_in' => 30,
+                'quantity_in' => 280, // 5 + 275
                 'quantity_out' => 5,
                 'quantity_remaining' => 275,
                 'real_cost' => 66.00,
@@ -961,7 +961,7 @@ class RawMaterialBatchSeeder extends Seeder
             [
                 'user_id' => 3,
                 'raw_material_id' => 24,
-                'quantity_in' => 220,
+                'quantity_in' => 220, // 0 + 220
                 'quantity_out' => 0,
                 'quantity_remaining' => 220,
                 'real_cost' => 484.00,
@@ -974,7 +974,7 @@ class RawMaterialBatchSeeder extends Seeder
             [
                 'user_id' => 1,
                 'raw_material_id' => 24,
-                'quantity_in' => 50,
+                'quantity_in' => 270, // 10 + 260
                 'quantity_out' => 10,
                 'quantity_remaining' => 260,
                 'real_cost' => 110.00,
@@ -987,7 +987,7 @@ class RawMaterialBatchSeeder extends Seeder
             [
                 'user_id' => 2,
                 'raw_material_id' => 24,
-                'quantity_in' => 30,
+                'quantity_in' => 290, // 5 + 285
                 'quantity_out' => 5,
                 'quantity_remaining' => 285,
                 'real_cost' => 66.00,
@@ -1002,7 +1002,7 @@ class RawMaterialBatchSeeder extends Seeder
             [
                 'user_id' => 1,
                 'raw_material_id' => 25,
-                'quantity_in' => 230,
+                'quantity_in' => 230, // 0 + 230
                 'quantity_out' => 0,
                 'quantity_remaining' => 230,
                 'real_cost' => 506.00,
@@ -1015,7 +1015,7 @@ class RawMaterialBatchSeeder extends Seeder
             [
                 'user_id' => 2,
                 'raw_material_id' => 25,
-                'quantity_in' => 50,
+                'quantity_in' => 280, // 10 + 270
                 'quantity_out' => 10,
                 'quantity_remaining' => 270,
                 'real_cost' => 110.00,
@@ -1028,7 +1028,7 @@ class RawMaterialBatchSeeder extends Seeder
             [
                 'user_id' => 3,
                 'raw_material_id' => 25,
-                'quantity_in' => 30,
+                'quantity_in' => 300, // 5 + 295
                 'quantity_out' => 5,
                 'quantity_remaining' => 295,
                 'real_cost' => 66.00,
@@ -1043,7 +1043,7 @@ class RawMaterialBatchSeeder extends Seeder
             [
                 'user_id' => 2,
                 'raw_material_id' => 26,
-                'quantity_in' => 240,
+                'quantity_in' => 240, // 0 + 240
                 'quantity_out' => 0,
                 'quantity_remaining' => 240,
                 'real_cost' => 528.00,
@@ -1056,7 +1056,7 @@ class RawMaterialBatchSeeder extends Seeder
             [
                 'user_id' => 3,
                 'raw_material_id' => 26,
-                'quantity_in' => 50,
+                'quantity_in' => 290, // 10 + 280
                 'quantity_out' => 10,
                 'quantity_remaining' => 280,
                 'real_cost' => 110.00,
@@ -1069,7 +1069,7 @@ class RawMaterialBatchSeeder extends Seeder
             [
                 'user_id' => 1,
                 'raw_material_id' => 26,
-                'quantity_in' => 30,
+                'quantity_in' => 310, // 5 + 305
                 'quantity_out' => 5,
                 'quantity_remaining' => 305,
                 'real_cost' => 66.00,
@@ -1084,7 +1084,7 @@ class RawMaterialBatchSeeder extends Seeder
             [
                 'user_id' => 3,
                 'raw_material_id' => 27,
-                'quantity_in' => 250,
+                'quantity_in' => 250, // 0 + 250
                 'quantity_out' => 0,
                 'quantity_remaining' => 250,
                 'real_cost' => 550.00,
@@ -1097,7 +1097,7 @@ class RawMaterialBatchSeeder extends Seeder
             [
                 'user_id' => 1,
                 'raw_material_id' => 27,
-                'quantity_in' => 50,
+                'quantity_in' => 300, // 10 + 290
                 'quantity_out' => 10,
                 'quantity_remaining' => 290,
                 'real_cost' => 110.00,
@@ -1110,7 +1110,7 @@ class RawMaterialBatchSeeder extends Seeder
             [
                 'user_id' => 2,
                 'raw_material_id' => 27,
-                'quantity_in' => 30,
+                'quantity_in' => 320, // 5 + 315
                 'quantity_out' => 5,
                 'quantity_remaining' => 315,
                 'real_cost' => 66.00,
@@ -1125,7 +1125,7 @@ class RawMaterialBatchSeeder extends Seeder
             [
                 'user_id' => 1,
                 'raw_material_id' => 28,
-                'quantity_in' => 260,
+                'quantity_in' => 260, // 0 + 260
                 'quantity_out' => 0,
                 'quantity_remaining' => 260,
                 'real_cost' => 572.00,
@@ -1138,7 +1138,7 @@ class RawMaterialBatchSeeder extends Seeder
             [
                 'user_id' => 2,
                 'raw_material_id' => 28,
-                'quantity_in' => 50,
+                'quantity_in' => 310, // 10 + 300
                 'quantity_out' => 10,
                 'quantity_remaining' => 300,
                 'real_cost' => 110.00,
@@ -1151,7 +1151,7 @@ class RawMaterialBatchSeeder extends Seeder
             [
                 'user_id' => 3,
                 'raw_material_id' => 28,
-                'quantity_in' => 30,
+                'quantity_in' => 330, // 5 + 325
                 'quantity_out' => 5,
                 'quantity_remaining' => 325,
                 'real_cost' => 66.00,
@@ -1166,7 +1166,7 @@ class RawMaterialBatchSeeder extends Seeder
             [
                 'user_id' => 2,
                 'raw_material_id' => 29,
-                'quantity_in' => 270,
+                'quantity_in' => 270, // 0 + 270
                 'quantity_out' => 0,
                 'quantity_remaining' => 270,
                 'real_cost' => 594.00,
@@ -1179,7 +1179,7 @@ class RawMaterialBatchSeeder extends Seeder
             [
                 'user_id' => 3,
                 'raw_material_id' => 29,
-                'quantity_in' => 50,
+                'quantity_in' => 320, // 10 + 310
                 'quantity_out' => 10,
                 'quantity_remaining' => 310,
                 'real_cost' => 110.00,
@@ -1192,7 +1192,7 @@ class RawMaterialBatchSeeder extends Seeder
             [
                 'user_id' => 1,
                 'raw_material_id' => 29,
-                'quantity_in' => 30,
+                'quantity_in' => 340, // 5 + 335
                 'quantity_out' => 5,
                 'quantity_remaining' => 335,
                 'real_cost' => 66.00,
@@ -1207,7 +1207,7 @@ class RawMaterialBatchSeeder extends Seeder
             [
                 'user_id' => 3,
                 'raw_material_id' => 30,
-                'quantity_in' => 280,
+                'quantity_in' => 280, // 0 + 280
                 'quantity_out' => 0,
                 'quantity_remaining' => 280,
                 'real_cost' => 616.00,
@@ -1220,7 +1220,7 @@ class RawMaterialBatchSeeder extends Seeder
             [
                 'user_id' => 1,
                 'raw_material_id' => 30,
-                'quantity_in' => 50,
+                'quantity_in' => 330, // 10 + 320
                 'quantity_out' => 10,
                 'quantity_remaining' => 320,
                 'real_cost' => 110.00,
@@ -1233,7 +1233,7 @@ class RawMaterialBatchSeeder extends Seeder
             [
                 'user_id' => 2,
                 'raw_material_id' => 30,
-                'quantity_in' => 30,
+                'quantity_in' => 350, // 5 + 345
                 'quantity_out' => 5,
                 'quantity_remaining' => 345,
                 'real_cost' => 66.00,

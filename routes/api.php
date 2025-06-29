@@ -22,6 +22,21 @@ Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
 
+Route::middleware(['auth:sanctum', 'user.role:admin'])->group(function () {
+    Route::get('/user/show/{id}', [UserController::class, 'show']);
+    // Admin routes here
+
+});
+
+Route::middleware(['auth:sanctum', 'role:accountant'])->group(function () {
+    // Accountant routes here
+});
+
+Route::middleware(['auth:sanctum', 'role:warehouse_keeper'])->group(function () {
+    // Warehouse keeper routes here
+});
+
+
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 //for admin
@@ -29,7 +44,6 @@ Route::middleware('auth:sanctum')->get('/showAllUsers', [UserController::class, 
 Route::middleware('auth:sanctum')->put('/admin/users/{id}', [UserController::class, 'updateUserById']);
 
 
-Route::get('/user/show/{id}', [UserController::class, 'show']);//->middleware('auth:sanctum');;
 Route::put('/user/update/{id}', [UserController::class, 'update']);
 Route::delete('/user/delete/{id}', [UserController::class, 'destroy']);
 
@@ -70,7 +84,7 @@ Route::get('/search/products', [ProductController::class, 'search']);
 
 Route::prefix('product-materials')->group(function () {
     Route::get('/', [ProductMaterialController::class, 'index']);
-    Route::get('/search',[ProductMaterialController::class,'search']);
+    Route::get('/search', [ProductMaterialController::class, 'search']);
     Route::get('/{id}', [ProductMaterialController::class, 'show']);
     Route::put('/{id}', [ProductMaterialController::class, 'updateByProduct']);
     // Get all materials for a product
@@ -108,41 +122,41 @@ Route::prefix('product-batches')->group(function () {
 });
 Route::prefix('conversions')->group(function () {
     Route::get('/', [ConversionController::class, 'index']);
-    Route::get('/search',[ConversionController::class, 'search']);
+    Route::get('/search', [ConversionController::class, 'search']);
     Route::get('/{id}', [ConversionController::class, 'show']);
     Route::get('/by-product-batch/{id}', [ConversionController::class, 'getByProductBatchID']);
 });
 
-Route::prefix('/product-sales')->group(function (){
+Route::prefix('/product-sales')->group(function () {
     Route::get('/', [ProductSaleController::class, 'index']);
-    Route::get('/search',[ProductSaleController::class, 'search']);
-    Route::get('/by-product-id/{id}',[ProductSaleController::class, 'getByProductId']);
-    Route::get('by-product-batch-id/{id}',[ProductSaleController::class, 'getByProductBatchId']);
+    Route::get('/search', [ProductSaleController::class, 'search']);
+    Route::get('/by-product-id/{id}', [ProductSaleController::class, 'getByProductId']);
+    Route::get('by-product-batch-id/{id}', [ProductSaleController::class, 'getByProductBatchId']);
     Route::get('/{id}', [ProductSaleController::class, 'show']);
     Route::post('/', [ProductSaleController::class, 'store']);
     Route::put('/{id}', [ProductSaleController::class, 'update']);
     Route::delete('/{id}', [ProductSaleController::class, 'destroy']);
 });
-Route::prefix('/damaged-materials')->group(function (){
-   Route::get('/', [DamagedMaterialController::class, 'index']);
-   Route::get('/search',[DamagedMaterialController::class, 'search']);
-   Route::get('/by-product-id/{id}',[DamagedMaterialController::class, 'getByProductId']);
-   Route::get('/by-raw-material-id/{id}',[DamagedMaterialController::class, 'getByRawMaterialId']);
-   Route::get('/{id}', [DamagedMaterialController::class, 'show']);
-   Route::post('/', [DamagedMaterialController::class, 'store']);
-   Route::put('/{id}', [DamagedMaterialController::class, 'update']);
-   Route::delete('/{id}', [DamagedMaterialController::class, 'destroy']);
+Route::prefix('/damaged-materials')->group(function () {
+    Route::get('/', [DamagedMaterialController::class, 'index']);
+    Route::get('/search', [DamagedMaterialController::class, 'search']);
+    Route::get('/by-product-id/{id}', [DamagedMaterialController::class, 'getByProductId']);
+    Route::get('/by-raw-material-id/{id}', [DamagedMaterialController::class, 'getByRawMaterialId']);
+    Route::get('/{id}', [DamagedMaterialController::class, 'show']);
+    Route::post('/', [DamagedMaterialController::class, 'store']);
+    Route::put('/{id}', [DamagedMaterialController::class, 'update']);
+    Route::delete('/{id}', [DamagedMaterialController::class, 'destroy']);
 });
 
-Route::prefix('/profit-loss-report')->group(function (){
+Route::prefix('/profit-loss-report')->group(function () {
     Route::get('/', [ProfitLossReportController::class, 'index']);
-    Route::get('/search',[ProfitLossReportController::class, 'search']);
+    Route::get('/search', [ProfitLossReportController::class, 'search']);
     Route::get('/{id}', [ProfitLossReportController::class, 'show']);
 });
 
-Route::prefix('/product-summary-reports')->group(function (){
+Route::prefix('/product-summary-reports')->group(function () {
     Route::get('/', [ProductSummaryReportController::class, 'index']);
-    Route::get('/search',[ProductSummaryReportController::class, 'search']);
+    Route::get('/search', [ProductSummaryReportController::class, 'search']);
     Route::get('/{id}', [ProductSummaryReportController::class, 'show']);
     Route::put('/refresh-report/{id}', [ProductSummaryReportController::class, 'refreshReport']);
     Route::put('/refresh-all-reports', [ProductSummaryReportController::class, 'refreshAllReports']);
