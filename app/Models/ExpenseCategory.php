@@ -2,9 +2,10 @@
 
 namespace App\Models;
 
+use Faker\Provider\Base;
 use Illuminate\Database\Eloquent\Model;
 
-class ExpenseCategory extends Model
+class ExpenseCategory extends BaseModel
 {
     protected $primaryKey = 'expense_category_id';
 

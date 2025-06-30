@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\ActivityLogController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\ConversionController;
 use App\Http\Controllers\Api\DamagedMaterialController;
@@ -161,3 +162,7 @@ Route::prefix('/product-summary-reports')->group(function () {
     Route::put('/refresh-report/{id}', [ProductSummaryReportController::class, 'refreshReport']);
     Route::put('/refresh-all-reports', [ProductSummaryReportController::class, 'refreshAllReports']);
 });
+
+Route::get('activity-logs', [ActivityLogController::class, 'index']);
+Route::get('activity-logs/{id}', [ActivityLogController::class, 'show']);
+Route::get('{model}/{id}/activity-logs', [ActivityLogController::class, 'forSubject']);

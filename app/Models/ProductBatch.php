@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class ProductBatch extends Model
+class ProductBatch extends BaseModel
 {
     protected $primaryKey = 'product_batch_id';
     protected $fillable = [

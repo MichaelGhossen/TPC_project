@@ -2,10 +2,11 @@
 
 namespace App\Models;
 
+use Faker\Provider\Base;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class RawMaterial extends Model
+class RawMaterial extends BaseModel
 {
     use HasFactory; // Fixed missing import
 

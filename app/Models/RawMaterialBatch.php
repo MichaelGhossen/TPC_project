@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use HasFactory;
-class RawMaterialBatch extends Model
+class RawMaterialBatch extends BaseModel
 {
 
     protected $primaryKey = 'raw_material_batch_id';

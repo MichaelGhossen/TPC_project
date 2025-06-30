@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use HasFactory;
-class Expense extends Model
+class Expense extends BaseModel
 {
     protected $primaryKey = 'expense_id';
 
