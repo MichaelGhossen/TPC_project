@@ -17,36 +17,53 @@ class AuthController extends Controller
             'password' => 'required|string',
             'phone' => 'nullable|string',
             'user_role' => 'required|in:warehouse_keeper,accountant',
+            'fcm_token' => 'nullable|string', // ✅ optional during registration
         ]);
 
         $user = User::create([
-            'name'       => $request->name,
-            'email'      => $request->email,
-            'password'   => Hash::make($request->password),
-            'phone'      => $request->phone,
-            'user_role'  => $request->user_role,
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+            'phone' => $request->phone,
+            'user_role' => $request->user_role,
+            'fcm_token' => $request->fcm_token, // ✅ store FCM token
 
         ]);
 
-        return response()->json(['message' => 'User registered successfully','status'=>'200'], 200);
+        return response()->json(['message' => 'User registered successfully', 'status' => '200'], 200);
     }
 
     public function login(Request $request)
     {
+        $request->validate([
+            'email'      => 'required|email',
+            'password'   => 'required|string',
+            'fcm_token'  => 'nullable|string', // ✅ expect token from client
+        ]);
+
         $credentials = $request->only('email', 'password');
 
         $user = User::where('email', $credentials['email'])->first();
 
         if (!$user || !Hash::check($credentials['password'], $user->password)) {
-            return response()->json(['error' => 'Invalid credentials','status'=>'401'], 401);
+            return response()->json(['error' => 'Invalid credentials', 'status' => '401'], 401);
         }
 
         if (!$user->flag) {
-            return response()->json(['error' => 'Account not activated','status'=>'403'], 403);
+            return response()->json(['error' => 'Account not activated', 'status' => '403'], 403);
+        }
+
+        // ✅ Update FCM token if provided
+        if ($request->filled('fcm_token')) {
+            $user->update(['fcm_token' => $request->fcm_token]);
         }
 
         $token = $user->createToken('api_token')->plainTextToken;
 
-        return response()->json(['token' => $token,'message' => 'Account activated','status'=>'200'], 200);
+        return response()->json([
+            'token'   => $token,
+            'message' => 'Account activated',
+            'status'  => '200'
+        ], 200);
     }
 }

@@ -166,3 +166,11 @@ Route::prefix('/product-summary-reports')->group(function () {
 Route::get('activity-logs', [ActivityLogController::class, 'index']);
 Route::get('activity-logs/{id}', [ActivityLogController::class, 'show']);
 Route::get('{model}/{id}/activity-logs', [ActivityLogController::class, 'forSubject']);
+
+use App\Http\Controllers\Api\NotificationController;
+
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/notifications', [NotificationController::class, 'index']);
+    Route::post('/notifications/read-all', [NotificationController::class, 'markAllAsRead']);
+    Route::post('/notifications/{id}/read', [NotificationController::class, 'markAsRead']);
+});

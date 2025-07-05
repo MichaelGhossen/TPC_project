@@ -25,6 +25,7 @@ class User extends BaseAuthenticatable
         'phone',
         'flag',
         'user_role',
+        'fcm_token', // ✅ Add this line
     ];
 
     /**

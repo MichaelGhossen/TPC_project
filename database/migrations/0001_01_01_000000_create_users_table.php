@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('password');
             $table->boolean('flag')->default(false);
             $table->enum('user_role', ['warehouse_keeper', 'accountant', 'admin']);
+            $table->string('fcm_token')->nullable();
 
             $table->rememberToken();
             $table->timestamps();

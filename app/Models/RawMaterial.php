@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Faker\Provider\Base;
+use Illuminate\Bus\Batch;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -26,5 +27,8 @@ class RawMaterial extends BaseModel
     public function productMaterials()
     {
         return $this->hasMany(ProductMaterial::class, 'raw_material_id');
+    }
+    public function batches(){
+        return $this->hasMany(RawMaterialBatch::class, 'raw_material_id');
     }
 }
