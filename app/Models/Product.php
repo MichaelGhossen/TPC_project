@@ -17,7 +17,8 @@ class Product extends BaseModel
         'price',
         'category',
         'weight_per_unit',
-        'minimum_stock_alert'
+        'minimum_stock_alert',
+        'image_path'
     ];
 
     protected $casts = [

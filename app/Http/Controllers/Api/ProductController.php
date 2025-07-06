@@ -54,6 +54,7 @@ class ProductController extends Controller
             'category' => 'required|in:direct_raw,semi_raw,semi_to_finished',
             'weight_per_unit' => 'required|numeric|min:0',
             'minimum_stock_alert' => 'required|integer|min:0',
+            'image' => 'nullable|image|max:2048',
             'materials' => 'required|array|min:1',
             'materials.*.component_id' => 'required|integer|min:1|distinct',
             'materials.*.quantity_required_per_unit' => 'required|numeric|min:0.0001',
@@ -80,6 +81,11 @@ class ProductController extends Controller
                 'total_material_quantity' => collect($validated['materials'])->sum('quantity_required_per_unit'),
             ], 422);
         }
+        $imagePath = null;
+
+        if ($request->hasFile('image')) {
+            $imagePath = $request->file('image')->store('products', 'public');
+        }
 
         $product = Product::create([
             'name' => $validated['name'],
@@ -87,6 +93,7 @@ class ProductController extends Controller
             'category' => $validated['category'],
             'weight_per_unit' => $validated['weight_per_unit'],
             'minimum_stock_alert' => $validated['minimum_stock_alert'],
+            'image_path' => $imagePath,
         ]);
 
         $this->createProductMaterials($product->product_id, $validated['materials'], $componentType);
@@ -119,6 +126,7 @@ class ProductController extends Controller
             'description' => 'nullable|string',
             'category' => 'sometimes|in:direct_raw,semi_raw,semi_to_finished',
             'weight_per_unit' => 'sometimes|numeric|min:0',
+            'image' => 'nullable|image|max:2048',
             'minimum_stock_alert' => 'sometimes|integer|min:0',
             'materials' => 'required_with:weight_per_unit,category|array|min:1',
             'materials.*.component_id' => 'required_with:materials|integer|min:1|distinct',
@@ -172,6 +180,11 @@ class ProductController extends Controller
 
         // Remove materials from validated before updating the product
         $productFields = collect($validated)->except('materials')->toArray();
+        if ($request->hasFile('image')) {
+            $imagePath = $request->file('image')->store('products', 'public');
+            $product->image_path = $imagePath;
+            $product->save();
+        }
         $product->update($productFields);
 
         return response()->json([
