@@ -18,6 +18,7 @@ use App\Http\Controllers\Api\ProductMaterialController;
 use App\Http\Controllers\Api\RawMaterialPatchController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\NotificationController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -66,6 +67,7 @@ Route::delete('/expenses/{id}', [ExpenseController::class, 'destroy']);
 
 Route::prefix('raw-materials')->group(function () {
     Route::get('/', [RawMaterialController::class, 'index']);
+    Route::get('/count', [RawMaterialController::class, 'materialsCount']);
     Route::get('/{id}', [RawMaterialController::class, 'show']);
     Route::post('/', [RawMaterialController::class, 'store']);
     Route::put('/{id}', [RawMaterialController::class, 'update']);
@@ -75,6 +77,7 @@ Route::get('search/raw-materials/', [RawMaterialController::class, 'search']);
 
 Route::prefix('products')->group(function () {
     Route::get('/', [ProductController::class, 'index']);
+    Route::get('/count', [ProductController::class, 'productsCount']);
     Route::get('/{id}', [ProductController::class, 'show']);
     Route::post('/', [ProductController::class, 'store']);
     Route::put('/{id}', [ProductController::class, 'update']);
@@ -130,6 +133,7 @@ Route::prefix('conversions')->group(function () {
 
 Route::prefix('/product-sales')->group(function () {
     Route::get('/', [ProductSaleController::class, 'index']);
+    Route::get('/monthly-sales',[ProductSaleController::class,'getMonthlySales']);
     Route::get('/search', [ProductSaleController::class, 'search']);
     Route::get('/by-product-id/{id}', [ProductSaleController::class, 'getByProductId']);
     Route::get('by-product-batch-id/{id}', [ProductSaleController::class, 'getByProductBatchId']);
@@ -157,6 +161,7 @@ Route::prefix('/profit-loss-report')->group(function () {
 
 Route::prefix('/product-summary-reports')->group(function () {
     Route::get('/', [ProductSummaryReportController::class, 'index']);
+    Route::get('/monthlyProfit',[ProductSummaryReportController::class,'getMonthlyProfit']);
     Route::get('/search', [ProductSummaryReportController::class, 'search']);
     Route::get('/{id}', [ProductSummaryReportController::class, 'show']);
     Route::put('/refresh-report/{id}', [ProductSummaryReportController::class, 'refreshReport']);
@@ -167,7 +172,6 @@ Route::get('activity-logs', [ActivityLogController::class, 'index']);
 Route::get('activity-logs/{id}', [ActivityLogController::class, 'show']);
 Route::get('{model}/{id}/activity-logs', [ActivityLogController::class, 'forSubject']);
 
-use App\Http\Controllers\Api\NotificationController;
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/notifications', [NotificationController::class, 'index']);

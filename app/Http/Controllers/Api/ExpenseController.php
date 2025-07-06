@@ -104,7 +104,9 @@ class ExpenseController extends Controller
             'status' => 200,
             'year' => $validated['year'],
             'month' => $validated['month'],
-            'data' => $expenses
+            'data' => $expenses,
+            'total real expenses' => round($expenses->where('type','real')->sum('amount'),2),
+            'total estimated expenses' => round($expenses->where('type','estimated')->sum('amount'),2)
         ]);
     }
 

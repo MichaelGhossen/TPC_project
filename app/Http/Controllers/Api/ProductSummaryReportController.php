@@ -144,7 +144,7 @@ class ProductSummaryReportController extends Controller
 
             $existingReport = ProductSummaryReport::where('product_id', $product->product_id)
                 ->where('type', $type)
-                ->whereDate('created_at',$expectedCreatedAt)
+                ->whereDate('created_at', $expectedCreatedAt)
                 ->first();
 
             if ($existingReport) {
@@ -158,6 +158,23 @@ class ProductSummaryReportController extends Controller
             }
         }
     }
+
+    public function getMonthlyProfit()
+    {
+        $startOfMonth = Carbon::now()->startOfMonth()->addDay();
+        $endOfMonth = Carbon::now()->endOfMonth()->addDay();
+
+        $totalProfit = ProductSummaryReport::where('type', 'daily')
+            ->whereBetween('created_at', [$startOfMonth, $endOfMonth])
+            ->sum('net_profit');
+
+        return response()->json([
+            'status' => 200,
+            'month' => $startOfMonth->format('F Y'),
+            'total_profit' => $totalProfit
+        ]);
+    }
+
 
     protected function getExpectedCreatedAt(Carbon $date, string $type): Carbon
     {

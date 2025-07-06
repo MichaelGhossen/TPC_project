@@ -292,18 +292,39 @@ class ProductSaleController extends Controller
         ]);
     }
 
-    public function getByProductId($productId){
+    public function getByProductId($productId)
+    {
         $query = ProductSale::with('product')->where('product_id', $productId)->get();
         return response()->json([
             'status' => 200,
             'data' => $query
         ]);
     }
-    public function getByProductBatchId($productBatchId){
+
+    public function getByProductBatchId($productBatchId)
+    {
         $query = ProductSale::with('product')->where('product_batch_id', $productBatchId)->get();
         return response()->json([
             'status' => 200,
             'data' => $query
+        ]);
+    }
+
+    public function getMonthlySales()
+    {
+        $currentYear = date('Y');
+        $currentMonth = date('m');
+
+        $currentMonthSales = ProductSale::whereYear('created_at', $currentYear)
+            ->whereMonth('created_at', $currentMonth);
+
+        $totalSales = $currentMonthSales->sum('revenue');
+        $totalProfit_loss = $currentMonthSales->sum('net_profit');
+
+        return response()->json([
+            'status' => 200,
+            'total_sales' => $totalSales,
+            'total_profit_loss' => $totalProfit_loss,
         ]);
     }
 }

@@ -22,6 +22,11 @@ class ProductController extends Controller
         ]);
     }
 
+    public function productsCount()
+    {
+        return Product::all()->count();
+    }
+
     // GET /api/products/{id}
     public function show($id)
     {
