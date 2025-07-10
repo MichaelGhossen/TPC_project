@@ -14,7 +14,7 @@ class ExpenseController extends Controller
     {
         return response()->json([
             'status' => 200,
-            'data' => Expense::all()
+            'data' => Expense::orderBy('created_at', 'desc')->get()
         ]);
     }
 
@@ -26,13 +26,10 @@ class ExpenseController extends Controller
             'type' => 'required|in:real,estimated',
             'amount' => 'required|numeric|min:0',
             'notes' => 'nullable|string',
-            'user_id' => 'required|exists:users,id'
+            'user_id' => Auth::user()
         ]);
 
-        $currentMonth = Carbon::now()->format('Y-m');
-
-        $count = Expense::where('user_id', $validated['user_id'])
-            ->where('type', $validated['type'])
+        $count = Expense::where('type', $validated['type'])
             ->whereYear('created_at', Carbon::now()->year)
             ->whereMonth('created_at', Carbon::now()->month)
             ->count();
@@ -70,9 +67,9 @@ class ExpenseController extends Controller
         if (!$expense) return response()->json(['status' => 404, 'message' => 'Not Found'], 404);
 
         $validated = $request->validate([
-            'expense_category_id' => 'sometimes|exists:expense_categories,expense_category_id',
             'amount' => 'sometimes|numeric|min:0',
-            'notes' => 'nullable|string'
+            'notes' => 'nullable|string',
+            'user_id' => Auth::user()
         ]);
 
         $expense->update($validated);

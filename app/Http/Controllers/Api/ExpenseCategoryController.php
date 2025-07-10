@@ -18,7 +18,7 @@ class ExpenseCategoryController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'name' => 'required|string|max:255',
+            'name' => 'required|unique:expense_categories,name|string|max:255',
             'description' => 'nullable|string'
         ]);
         $category = ExpenseCategory::create($validated);
@@ -37,7 +37,6 @@ class ExpenseCategoryController extends Controller
 
         return response()->json([
             'status' => 201,
-            'message' => 'Created',
             'data' => $category]);
     }
 

@@ -49,21 +49,25 @@ Route::middleware('auth:sanctum')->put('/admin/users/{id}', [UserController::cla
 Route::put('/user/update/{id}', [UserController::class, 'update']);
 Route::delete('/user/delete/{id}', [UserController::class, 'destroy']);
 
-Route::prefix('expense-categories')->group(function () {
-    Route::get('/', [ExpenseCategoryController::class, 'index']);
-    Route::post('/', [ExpenseCategoryController::class, 'store']);
-    Route::get('{id}', [ExpenseCategoryController::class, 'show']);
-    Route::put('/{id}', [ExpenseCategoryController::class, 'update']);
-    Route::delete('{id}', [ExpenseCategoryController::class, 'destroy']);
 
+Route::middleware(['auth:sanctum'])->group(function () {
+
+    Route::prefix('expense-categories')->group(function () {
+        Route::get('/', [ExpenseCategoryController::class, 'index']);
+        Route::get('/search', [ExpenseCategoryController::class, 'searchByName']);
+        Route::post('/', [ExpenseCategoryController::class, 'store']);
+        Route::get('{id}', [ExpenseCategoryController::class, 'show']);
+        Route::put('/{id}', [ExpenseCategoryController::class, 'update']);
+        Route::delete('{id}', [ExpenseCategoryController::class, 'destroy']);
+    });
+
+    Route::get('/expenses', [ExpenseController::class, 'index']);
+    Route::get('/expenses/by-month', [ExpenseController::class, 'getByMonth']);
+    Route::post('/expenses', [ExpenseController::class, 'store']);
+    Route::get('/expenses/{id}', [ExpenseController::class, 'show']);
+    Route::put('/expenses/{id}', [ExpenseController::class, 'update']);
+    Route::delete('/expenses/{id}', [ExpenseController::class, 'destroy']);
 });
-Route::get('/search/expense-categories', [ExpenseCategoryController::class, 'searchByName']);
-
-Route::get('/expenses', [ExpenseController::class, 'index']);
-Route::post('/expenses', [ExpenseController::class, 'store']);
-Route::get('/expenses/{id}', [ExpenseController::class, 'show']);
-Route::put('/expenses/{id}', [ExpenseController::class, 'update']);
-Route::delete('/expenses/{id}', [ExpenseController::class, 'destroy']);
 
 Route::prefix('raw-materials')->group(function () {
     Route::get('/', [RawMaterialController::class, 'index']);
@@ -106,8 +110,6 @@ Route::get('/by-raw-material/{raw_material_id}', [RawMaterialPatchController::cl
 Route::get('/search/raw-material-batches', [RawMaterialPatchController::class, 'search']);
 
 
-Route::get('/by-month/expenses', [ExpenseController::class, 'getByMonth']);
-
 Route::get('/production-settings', [ProductionSettingController::class, 'index']);
 Route::post('/production-settings', [ProductionSettingController::class, 'store']);
 Route::get('/production-settings/{id}', [ProductionSettingController::class, 'show']);
@@ -133,7 +135,7 @@ Route::prefix('conversions')->group(function () {
 
 Route::prefix('/product-sales')->group(function () {
     Route::get('/', [ProductSaleController::class, 'index']);
-    Route::get('/monthly-sales',[ProductSaleController::class,'getMonthlySales']);
+    Route::get('/monthly-sales', [ProductSaleController::class, 'getMonthlySales']);
     Route::get('/search', [ProductSaleController::class, 'search']);
     Route::get('/by-product-id/{id}', [ProductSaleController::class, 'getByProductId']);
     Route::get('by-product-batch-id/{id}', [ProductSaleController::class, 'getByProductBatchId']);
@@ -161,7 +163,7 @@ Route::prefix('/profit-loss-report')->group(function () {
 
 Route::prefix('/product-summary-reports')->group(function () {
     Route::get('/', [ProductSummaryReportController::class, 'index']);
-    Route::get('/monthlyProfit',[ProductSummaryReportController::class,'getMonthlyProfit']);
+    Route::get('/monthlyProfit', [ProductSummaryReportController::class, 'getMonthlyProfit']);
     Route::get('/search', [ProductSummaryReportController::class, 'search']);
     Route::get('/{id}', [ProductSummaryReportController::class, 'show']);
     Route::put('/refresh-report/{id}', [ProductSummaryReportController::class, 'refreshReport']);
