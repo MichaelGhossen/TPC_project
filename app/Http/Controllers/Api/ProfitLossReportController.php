@@ -81,17 +81,13 @@ class ProfitLossReportController extends Controller
         }
 
 
-        if ($request->has('product_name')) {
+        if ($request->has('name')) {
             $query->whereHas('damagedMaterial.productBatch.product', function ($q) use ($request) {
-                $q->where('name', 'like', '%' . $request->product_name . '%');
+                $q->where('name', 'like', '%' . $request->name . '%');
             })->orWhereHas('productSale.productBatch.product', function ($q) use ($request) {
-                $q->where('name', 'like', '%' . $request->product_name . '%');
-            });
-        }
-
-        if ($request->has('raw_material_name')) {
-            $query->whereHas('damagedMaterial.rawMaterialBatch.rawMaterial', function ($q) use ($request) {
-                $q->where('name', 'like', '%' . $request->raw_material_name . '%');
+                $q->where('name', 'like', '%' . $request->name . '%');
+            })->orWhereHas('damagedMaterial.rawMaterialBatch.rawMaterial', function ($q) use ($request) {
+                $q->where('name', 'like', '%' . $request->name . '%');
             });
         }
 

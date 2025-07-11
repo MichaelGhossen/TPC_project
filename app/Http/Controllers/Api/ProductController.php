@@ -128,7 +128,7 @@ class ProductController extends Controller
             'weight_per_unit' => 'sometimes|numeric|min:0',
             'image' => 'nullable|image|max:2048',
             'minimum_stock_alert' => 'sometimes|integer|min:0',
-            'materials' => 'required_with:weight_per_unit,category|array|min:1',
+            'materials' => 'sometimes|array|min:1',
             'materials.*.component_id' => 'required_with:materials|integer|min:1|distinct',
             'materials.*.quantity_required_per_unit' => 'required_with:materials|numeric|min:0.0001',
         ]);
@@ -137,7 +137,7 @@ class ProductController extends Controller
         $originalWeight = $product->weight_per_unit;
 
         $newCategory = $validated['category'] ?? $originalCategory;
-        $newWeight = $validated['weight_per_unit'] ?? $originalWeight;
+        $newWeight = $validated['weight_per_unit'] ?? round($originalWeight,2);
 
         if ($newCategory === 'semi_raw' && $newWeight !== 1.0) {
             return response()->json([
@@ -149,7 +149,7 @@ class ProductController extends Controller
         $categoryChanged = isset($validated['category']) && $validated['category'] !== $originalCategory;
         $weightChanged = isset($validated['weight_per_unit']) && abs($validated['weight_per_unit'] - $originalWeight) > 0.0001;
 
-        if ($categoryChanged || $weightChanged) {
+        if ($categoryChanged || $weightChanged || isset($validated['materials'])) {
             if (!isset($validated['materials'])) {
                 return response()->json([
                     'status' => 422,
@@ -226,7 +226,7 @@ class ProductController extends Controller
         }
 
         if ($request->has('category')) {
-            $query->where('category', $request->category); // 'semi_finished' or 'finished'
+            $query->where('category', $request->category);
         }
 
         if ($request->has('price_min')) {
@@ -251,6 +251,11 @@ class ProductController extends Controller
             'status' => 200,
             'data' => $results
         ]);
+    }
+
+    public function getSemiFinishedProducts()
+    {
+        return Product::where('category','semi_raw')->get();
     }
 
     public function updateProductsPrices()
@@ -364,7 +369,9 @@ class ProductController extends Controller
 
         foreach ($materials as $i => $m) {
             if ($componentType === 'raw_material') {
-                if (!RawMaterial::where('raw_material_id', $m['component_id'])->exists()) {
+                $rawId = $m['component_id'];
+                $raw = RawMaterial::find($rawId);
+                if (!$raw || $raw->status === 'unused') {
                     $errors->errors()->add("materials.$i." . ($m['component_id']), 'Invalid raw material');
                 }
             } else {

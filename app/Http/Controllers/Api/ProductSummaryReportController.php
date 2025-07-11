@@ -114,9 +114,9 @@ class ProductSummaryReportController extends Controller
             }
         }
 
-        if ($request->filled('product_name')) {
+        if ($request->filled('name')) {
             $query->whereHas('product', function ($q) use ($request) {
-                $q->where('name', 'like', '%' . $request->product_name . '%');
+                $q->where('name', 'like', '%' . $request->name . '%');
             });
         }
 

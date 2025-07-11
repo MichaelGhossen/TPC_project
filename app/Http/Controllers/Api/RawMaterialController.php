@@ -17,9 +17,21 @@ class RawMaterialController extends Controller
         ]);
     }
 
+    public function getUsedMaterials(){
+        $usedMaterials = RawMaterial::where('status','used')->get();
+        return response()->json([
+            'status' => 200,
+            'data' => $usedMaterials
+        ]);
+    }
+
     public function materialsCount()
     {
-         return rawMaterial::where('status','used')->count();
+        $count = rawMaterial::where('status','used')->count();
+         return response()->json([
+             'status' => 200,
+             'used materials count' => $count
+         ]);
     }
 
     // Get one

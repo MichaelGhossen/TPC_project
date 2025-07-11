@@ -16,108 +16,130 @@ class UserController extends Controller
         return response()->json([
             'message' => 'User get successfully',
             'user' => $user,
-            'status'=>'200'
+            'status' => '200'
         ], 200);
     }
-    public function update(Request $request, $id)
-{
-    $authUser = $request->user();
 
-    $user = User::find($id);
+    public function update(Request $request)
+    {
 
-    if (!$user) {
-        return response()->json(['message' => 'User not found',
-        'status'=>'404'
-    ], 404);
+        $user = auth()->user();
+
+        if (!$user) {
+            return response()->json(['message' => 'User not found',
+                'status' => '404'
+            ], 404);
+        }
+
+
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => ['required', 'email', 'max:255', Rule::unique('users')->ignore($user->id)],
+            'phone' => 'nullable|string|max:20',
+            'password' => 'nullable|string|min:6',
+        ]);
+
+        $user->name = $request->get('name');
+        $user->email = $request->get('email');
+        $user->phone = $request->get('phone');
+
+        if ($request->filled('password')) {
+            $user->password = Hash::make($request->get('password'));
+        }
+
+        $user->save();
+
+        return response()->json([
+            'message' => 'User updated successfully',
+            'user' => $user,
+            'status' => '200'
+        ], 200);
     }
 
-
-    $request->validate([
-        'name' => 'required|string|max:255',
-        'email' => ['required', 'email', 'max:255', Rule::unique('users')->ignore($user->id)],
-        'phone' => 'nullable|string|max:20',
-        'user_role' => ['required', Rule::in(['admin', 'accountant', 'warehouse_keeper'])],
-        'password' => 'nullable|string|min:6',
-    ]);
-
-    $user->name = $request->get('name');
-    $user->email = $request->get('email');
-    $user->phone = $request->get('phone');
-    $user->user_role = $request->get('user_role');
-
-    if ($request->filled('password')) {
-        $user->password = Hash::make($request->get('password'));
-    }
-
-    $user->save();
-
-    return response()->json([
-        'message' => 'User updated successfully',
-        'user' => $user,
-        'status'=>'200'
-    ], 200);
-}
     public function destroy($id)
     {
         $user = User::findOrFail($id);
         $user->delete();
 
         return response()->json(['message' => 'User deleted successfully',
-        'status'=>'200'
-    ], 200);
+            'status' => '200'
+        ], 200);
     }
 
     public function showAllUsers(Request $request)
-{
-    $authUser = $request->user();
-    $users =User::all();
+    {
+        $authUser = $request->user();
+        $users = User::all();
 
-    return response()->json([
-        'message' => 'All users retrieved successfully',
-        'users' => $users,
-        'status'=>'200'
-    ],200);
-}
-public function updateUserById(Request $request, $id)
-{
-    $authUser = $request->user();
-    $user = User::find($id);
-    if (!$user) {
         return response()->json([
-            'message' => 'User not found',
-            'status'  => '404'
-        ], 404);
+            'message' => 'All users retrieved successfully',
+            'users' => $users,
+            'status' => '200'
+        ], 200);
     }
 
-    $validated = $request->validate([
-        'name'       => 'required|string|max:255',
-        'email'      => ['required', 'email', 'max:255', Rule::unique('users')->ignore($user->id)],
-        'phone'      => 'nullable|string|max:20',
-        'user_role'  => ['required', Rule::in(['admin', 'accountant', 'warehouse_keeper'])],
-        'flag'       => 'nullable|boolean', // ✅ allow editing flag
-        'password'   => 'nullable|string|min:6',
-    ]);
+    public function updateUserById(Request $request, $id)
+    {
+        $authUser = $request->user();
+        $user = User::find($id);
+        if (!$user) {
+            return response()->json([
+                'message' => 'User not found',
+                'status' => '404'
+            ], 404);
+        }
 
-    $user->name       = $validated['name'];
-    $user->email      = $validated['email'];
-    $user->phone      = $validated['phone'] ?? $user->phone;
-    $user->user_role  = $validated['user_role'];
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => ['required', 'email', 'max:255', Rule::unique('users')->ignore($user->id)],
+            'phone' => 'nullable|string|max:20',
+            'user_role' => ['required', Rule::in(['admin', 'accountant', 'warehouse_keeper'])],
+            'flag' => 'nullable|boolean', // ✅ allow editing flag
+            'password' => 'nullable|string|min:6',
+        ]);
 
-    // ✅ Update flag if present
-    if (array_key_exists('flag', $validated)) {
-        $user->flag = $validated['flag'];
+        $user->name = $validated['name'];
+        $user->email = $validated['email'];
+        $user->phone = $validated['phone'] ?? $user->phone;
+        $user->user_role = $validated['user_role'];
+
+        // ✅ Update flag if present
+        if (array_key_exists('flag', $validated)) {
+            $user->flag = $validated['flag'];
+        }
+
+        if (!empty($validated['password'])) {
+            $user->password = Hash::make($validated['password']);
+        }
+
+        $user->save();
+
+        return response()->json([
+            'message' => 'User updated successfully by admin',
+            'user' => $user,
+            'status' => '200'
+        ], 200);
     }
 
-    if (!empty($validated['password'])) {
-        $user->password = Hash::make($validated['password']);
+    public function changeUserActivation($id)
+    {
+        $user = User::find($id);
+
+        if (!$user) {
+            return response()->json([
+                'message' => 'User not found',
+                'status' => 404
+            ], 404);
+        }
+
+        $user->flag = !$user->flag;
+        $user->save();
+
+        return response()->json([
+            'message' => 'User activation status changed successfully',
+            'user_name' => $user->name,
+            'is_active' => $user->flag
+        ]);
     }
 
-    $user->save();
-
-    return response()->json([
-        'message' => 'User updated successfully by admin',
-        'user'    => $user,
-        'status'  => '200'
-    ], 200);
-}
 }

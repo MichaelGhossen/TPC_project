@@ -55,6 +55,14 @@ class ProductPatchController extends Controller
     {
         $query = ProductBatch::with('product');
 
+        if ($request->has('name')) {
+            $query->where(function ($q) use ($request) {
+                $q->whereHas('product', function ($sub) use ($request) {
+                    $sub->where('name', 'like', '%' . $request->name . '%');
+                });
+            });
+        }
+
         if ($request->has('product_id')) {
             $query->where('product_id', $request->product_id);
         }
@@ -69,13 +77,6 @@ class ProductPatchController extends Controller
         }
         if ($request->has('date_to')) {
             $query->whereDate('created_at', '<=', $request->date_to);
-        }
-        if ($request->has('name')) {
-            $query->where(function ($q) use ($request) {
-                $q->whereHas('product', function ($sub) use ($request) {
-                    $sub->where('name', 'like', '%' . $request->name . '%');
-                });
-            });
         }
 
         $results = $query

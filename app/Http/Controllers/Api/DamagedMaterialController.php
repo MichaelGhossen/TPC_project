@@ -196,6 +196,14 @@ class DamagedMaterialController extends Controller
     {
         $query = DamagedMaterial::with(['rawMaterialBatch.rawMaterial', 'productBatch.product']);
 
+        if ($request->has('name')) {
+            $query->whereHas('productBatch.product', function ($q) use ($request) {
+                $q->where('name', 'like', '%' . $request->name . '%');
+            })->orWhereHas('rawMaterialBatch.rawMaterial', function ($q) use ($request) {
+                $q->where('name', 'like', '%' . $request->name . '%');
+            });
+        }
+
         if ($request->has('material_type')) {
             $query->where('material_type', $request->material_type);
         }
@@ -208,16 +216,6 @@ class DamagedMaterialController extends Controller
         if ($request->has('date_to')) {
             $query->whereDate('created_at', '<=', $request->date_to);
         }
-        if ($request->has('product_name')) {
-            $query->whereHas('productBatch.product', function ($q) use ($request) {
-                $q->where('name', 'like', '%' . $request->product_name . '%');
-            });
-        }
-        if ($request->has('raw_material_name')) {
-            $query->whereHas('rawMaterialBatch.rawMaterial', function ($q) use ($request) {
-                $q->where('name', 'like', '%' . $request->raw_material_name . '%');
-            });
-        }
 
         return response()->json([
             'status' => 200,
@@ -225,11 +223,13 @@ class DamagedMaterialController extends Controller
         ]);
     }
 
-    public function getByProductId($productId)
+    public
+    function getByProductId($productId)
     {
         $damaged = DamagedMaterial::whereHas('productBatch', function ($q) use ($productId) {
             $q->where('product_id', $productId);
-        })->with(['productBatch.product'])->orderBy('created_at', 'desc')
+        })->with(['productBatch.product'])
+            ->orderBy('created_at', 'desc')
             ->get();
 
         return response()->json([
@@ -238,11 +238,13 @@ class DamagedMaterialController extends Controller
         ]);
     }
 
-    public function getByRawMaterialId($rawMaterialId)
+    public
+    function getByRawMaterialId($rawMaterialId)
     {
         $damaged = DamagedMaterial::whereHas('rawMaterialBatch', function ($q) use ($rawMaterialId) {
             $q->where('raw_material_id', $rawMaterialId);
-        })->with(['rawMaterialBatch.rawMaterial'])->orderBy('created_at', 'desc')
+        })->with(['rawMaterialBatch.rawMaterial'])
+            ->orderBy('created_at', 'desc')
             ->get();
 
         return response()->json([

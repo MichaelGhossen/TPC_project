@@ -17,15 +17,15 @@ class CheckStockLevels extends Command
 
     public function handle()
     {
-        $admins = User::where('user_role', 'admin')->get();
+        $users = User::all();
 
-        $this->checkStock('product', $admins);
-        $this->checkStock('raw_material', $admins);
+        $this->checkStock('product', $users);
+        $this->checkStock('raw_material', $users);
 
         $this->info('Stock check complete');
     }
 
-    private function checkStock($type, $admins)
+    private function checkStock($type, $users)
     {
         if ($type === 'product') {
             $items = \App\Models\Product::with('batches')->get();
@@ -38,11 +38,11 @@ class CheckStockLevels extends Command
             $minimum = $item->minimum_stock_alert;
 
             if ($totalRemaining <= $minimum) {
-                foreach ($admins as $admin) {
-                    $admin->notify(new StockAlertNotification($item, $type));
+                foreach ($users as $user) {
+                    $user->notify(new StockAlertNotification($item, $type));
 
-                    if ($admin->fcm_token) {
-                        $this->sendPush($admin->fcm_token, 'Stock Alert', "{$item->name} is low in stock!");
+                    if ($user->fcm_token) {
+                        $this->sendPush($user->fcm_token, 'Stock Alert', "{$item->name} is low in stock!");
                     }
                 }
             }

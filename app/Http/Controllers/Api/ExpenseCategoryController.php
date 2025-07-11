@@ -72,16 +72,8 @@ class ExpenseCategoryController extends Controller
 
         $name = $request->input('name');
 
-        // For MySQL/MariaDB - case insensitive exact match
-        $category = ExpenseCategory::whereRaw('LOWER(name) = ?', [strtolower($name)])
-            ->first();
-
-        if (!$category) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Expense category not found'
-            ], 404);
-        }
+        $category = ExpenseCategory::where('name', 'like', '%' . $name . '%')
+            ->get();
 
         return response()->json([
             'success' => true,

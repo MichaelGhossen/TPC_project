@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\Api;
+
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 use App\Http\Controllers\Controller;
@@ -10,7 +11,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class ExpenseController extends Controller
-{ public function index()
+{
+    public function index()
     {
         return response()->json([
             'status' => 200,
@@ -26,10 +28,11 @@ class ExpenseController extends Controller
             'type' => 'required|in:real,estimated',
             'amount' => 'required|numeric|min:0',
             'notes' => 'nullable|string',
-            'user_id' => Auth::user()
         ]);
 
+        $validated['user_id'] = Auth::id();
         $count = Expense::where('type', $validated['type'])
+            ->where('expense_category_id', $validated['expense_category_id'])
             ->whereYear('created_at', Carbon::now()->year)
             ->whereMonth('created_at', Carbon::now()->month)
             ->count();
@@ -37,7 +40,7 @@ class ExpenseController extends Controller
         if ($count >= 1) {
             return response()->json([
                 'status' => 403,
-                'message' => 'Only one entries allowed per type per month.'
+                'message' => 'Only one entry allowed per type per month.'
             ], 403);
         }
 
@@ -69,7 +72,6 @@ class ExpenseController extends Controller
         $validated = $request->validate([
             'amount' => 'sometimes|numeric|min:0',
             'notes' => 'nullable|string',
-            'user_id' => Auth::user()
         ]);
 
         $expense->update($validated);
@@ -86,6 +88,7 @@ class ExpenseController extends Controller
 
         return response()->json(['status' => 200, 'message' => 'Deleted']);
     }
+
     public function getByMonth(Request $request)
     {
         $validated = $request->validate([
@@ -102,8 +105,41 @@ class ExpenseController extends Controller
             'year' => $validated['year'],
             'month' => $validated['month'],
             'data' => $expenses,
-            'total real expenses' => round($expenses->where('type','real')->sum('amount'),2),
-            'total estimated expenses' => round($expenses->where('type','estimated')->sum('amount'),2)
+            'total real expenses' => round($expenses->where('type', 'real')->sum('amount'), 2),
+            'total estimated expenses' => round($expenses->where('type', 'estimated')->sum('amount'), 2)
+        ]);
+    }
+
+    public function searchByCategoryName(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255'
+        ]);
+
+        $name = $request->input('name');
+
+        $expenses = Expense::with('category')
+            ->whereHas('category', function ($query) use ($name) {
+                $query->where('name', 'like', '%' . $name . '%');
+            })
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        return response()->json([
+            'success' => true,
+            'data' => $expenses
+        ]);
+    }
+
+    function getByCategoryId($id)
+    {
+        $expenses = Expense::where('expense_category_id', $id)
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        return response()->json([
+            'status' => 200,
+            'data' => $expenses
         ]);
     }
 

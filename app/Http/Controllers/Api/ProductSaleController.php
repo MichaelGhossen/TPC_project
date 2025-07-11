@@ -246,9 +246,9 @@ class ProductSaleController extends Controller
             $query->where('product_id', $request->product_id);
         }
 
-        if ($request->has('product_name')) {
+        if ($request->has('name')) {
             $query->whereHas('product', function ($q) use ($request) {
-                $q->where('name', 'like', '%' . $request->product_name . '%');
+                $q->where('name', 'like', '%' . $request->name . '%');
             });
         }
 
