@@ -25,7 +25,7 @@ class ProductBatchSeeder extends Seeder
                 'notes' => 'cash',
                 'status' => 'ready',
                 'reproduction_count' => 0,
-                'created_at' => '2025-01-01 10:00:00',
+                'created_at' => '2024-01-01 10:00:00',
                 'updated_at' => '2025-01-01 10:00:00',
             ],
             [
@@ -38,7 +38,7 @@ class ProductBatchSeeder extends Seeder
                 'notes' => 'bank transfer',
                 'status' => 'ready',
                 'reproduction_count' => 0,
-                'created_at' => '2025-01-11 10:00:00',
+                'created_at' => '2024-01-11 10:00:00',
                 'updated_at' => '2025-01-11 10:00:00',
             ],
             [
@@ -51,7 +51,7 @@ class ProductBatchSeeder extends Seeder
                 'notes' => 'credit card',
                 'status' => 'ready',
                 'reproduction_count' => 0,
-                'created_at' => '2025-01-21 10:00:00',
+                'created_at' => '2024-01-21 10:00:00',
                 'updated_at' => '2025-01-21 10:00:00',
             ],
 
@@ -66,7 +66,7 @@ class ProductBatchSeeder extends Seeder
                 'notes' => 'cash',
                 'status' => 'ready',
                 'reproduction_count' => 0,
-                'created_at' => '2025-01-04 10:00:00',
+                'created_at' => '2024-01-04 10:00:00',
                 'updated_at' => '2025-01-04 10:00:00',
             ],
             [
@@ -79,7 +79,7 @@ class ProductBatchSeeder extends Seeder
                 'notes' => 'bank transfer',
                 'status' => 'ready',
                 'reproduction_count' => 0,
-                'created_at' => '2025-01-14 10:00:00',
+                'created_at' => '2024-01-14 10:00:00',
                 'updated_at' => '2025-01-14 10:00:00',
             ],
             [
@@ -92,7 +92,7 @@ class ProductBatchSeeder extends Seeder
                 'notes' => 'credit card',
                 'status' => 'ready',
                 'reproduction_count' => 0,
-                'created_at' => '2025-01-24 10:00:00',
+                'created_at' => '2024-01-24 10:00:00',
                 'updated_at' => '2025-01-24 10:00:00',
             ],
 
@@ -107,7 +107,7 @@ class ProductBatchSeeder extends Seeder
                 'notes' => 'cash',
                 'status' => 'ready',
                 'reproduction_count' => 0,
-                'created_at' => '2025-01-07 10:00:00',
+                'created_at' => '2024-01-07 10:00:00',
                 'updated_at' => '2025-01-07 10:00:00',
             ],
             [
@@ -120,7 +120,7 @@ class ProductBatchSeeder extends Seeder
                 'notes' => 'bank transfer',
                 'status' => 'ready',
                 'reproduction_count' => 0,
-                'created_at' => '2025-01-17 10:00:00',
+                'created_at' => '2024-01-17 10:00:00',
                 'updated_at' => '2025-01-17 10:00:00',
             ],
             [
@@ -133,7 +133,7 @@ class ProductBatchSeeder extends Seeder
                 'notes' => 'credit card',
                 'status' => 'ready',
                 'reproduction_count' => 0,
-                'created_at' => '2025-01-27 10:00:00',
+                'created_at' => '2024-01-27 10:00:00',
                 'updated_at' => '2025-01-27 10:00:00',
             ],
 
@@ -148,7 +148,7 @@ class ProductBatchSeeder extends Seeder
                 'notes' => 'cash',
                 'status' => 'ready',
                 'reproduction_count' => 0,
-                'created_at' => '2025-01-10 10:00:00',
+                'created_at' => '2024-01-10 10:00:00',
                 'updated_at' => '2025-01-10 10:00:00',
             ],
             [
@@ -161,7 +161,7 @@ class ProductBatchSeeder extends Seeder
                 'notes' => 'bank transfer',
                 'status' => 'ready',
                 'reproduction_count' => 0,
-                'created_at' => '2025-01-20 10:00:00',
+                'created_at' => '2024-01-20 10:00:00',
                 'updated_at' => '2025-01-20 10:00:00',
             ],
             [
@@ -174,7 +174,7 @@ class ProductBatchSeeder extends Seeder
                 'notes' => 'credit card',
                 'status' => 'ready',
                 'reproduction_count' => 0,
-                'created_at' => '2025-01-30 10:00:00',
+                'created_at' => '2024-01-30 10:00:00',
                 'updated_at' => '2025-01-30 10:00:00',
             ],
 
@@ -189,7 +189,7 @@ class ProductBatchSeeder extends Seeder
                 'notes' => 'cash',
                 'status' => 'ready',
                 'reproduction_count' => 0,
-                'created_at' => '2025-01-13 10:00:00',
+                'created_at' => '2024-01-13 10:00:00',
                 'updated_at' => '2025-01-13 10:00:00',
             ],
             [
@@ -202,7 +202,7 @@ class ProductBatchSeeder extends Seeder
                 'notes' => 'bank transfer',
                 'status' => 'ready',
                 'reproduction_count' => 0,
-                'created_at' => '2025-01-23 10:00:00',
+                'created_at' => '2024-01-23 10:00:00',
                 'updated_at' => '2025-01-23 10:00:00',
             ],
             [
@@ -215,7 +215,7 @@ class ProductBatchSeeder extends Seeder
                 'notes' => 'credit card',
                 'status' => 'ready',
                 'reproduction_count' => 0,
-                'created_at' => '2025-02-02 10:00:00',
+                'created_at' => '2024-02-02 10:00:00',
                 'updated_at' => '2025-02-02 10:00:00',
             ],
 
@@ -230,7 +230,7 @@ class ProductBatchSeeder extends Seeder
                 'notes' => 'cash',
                 'status' => 'ready',
                 'reproduction_count' => 0,
-                'created_at' => '2025-01-16 10:00:00',
+                'created_at' => '2024-01-16 10:00:00',
                 'updated_at' => '2025-01-16 10:00:00',
             ],
             [
@@ -243,7 +243,7 @@ class ProductBatchSeeder extends Seeder
                 'notes' => 'bank transfer',
                 'status' => 'ready',
                 'reproduction_count' => 0,
-                'created_at' => '2025-01-26 10:00:00',
+                'created_at' => '2024-01-26 10:00:00',
                 'updated_at' => '2025-01-26 10:00:00',
             ],
             [
@@ -256,7 +256,7 @@ class ProductBatchSeeder extends Seeder
                 'notes' => 'credit card',
                 'status' => 'ready',
                 'reproduction_count' => 0,
-                'created_at' => '2025-02-05 10:00:00',
+                'created_at' => '2024-02-05 10:00:00',
                 'updated_at' => '2025-02-05 10:00:00',
             ],
 
@@ -271,7 +271,7 @@ class ProductBatchSeeder extends Seeder
                 'notes' => 'cash',
                 'status' => 'ready',
                 'reproduction_count' => 0,
-                'created_at' => '2025-01-19 10:00:00',
+                'created_at' => '2024-01-19 10:00:00',
                 'updated_at' => '2025-01-19 10:00:00',
             ],
             [
@@ -284,7 +284,7 @@ class ProductBatchSeeder extends Seeder
                 'notes' => 'bank transfer',
                 'status' => 'ready',
                 'reproduction_count' => 0,
-                'created_at' => '2025-01-29 10:00:00',
+                'created_at' => '2024-01-29 10:00:00',
                 'updated_at' => '2025-01-29 10:00:00',
             ],
             [
@@ -325,7 +325,7 @@ class ProductBatchSeeder extends Seeder
                 'notes' => 'bank transfer',
                 'status' => 'ready',
                 'reproduction_count' => 0,
-                'created_at' => '2025-02-01 10:00:00',
+                'created_at' => '2024-02-01 10:00:00',
                 'updated_at' => '2025-02-01 10:00:00',
             ],
             [
@@ -379,7 +379,7 @@ class ProductBatchSeeder extends Seeder
                 'notes' => 'credit card',
                 'status' => 'ready',
                 'reproduction_count' => 0,
-                'created_at' => '2025-02-14 10:00:00',
+                'created_at' => '2024-02-14 10:00:00',
                 'updated_at' => '2025-02-14 10:00:00',
             ],
 
@@ -394,7 +394,7 @@ class ProductBatchSeeder extends Seeder
                 'notes' => 'cash',
                 'status' => 'ready',
                 'reproduction_count' => 0,
-                'created_at' => '2025-01-28 10:00:00',
+                'created_at' => '2024-01-28 10:00:00',
                 'updated_at' => '2025-01-28 10:00:00',
             ],
             [
@@ -420,7 +420,7 @@ class ProductBatchSeeder extends Seeder
                 'notes' => 'credit card',
                 'status' => 'ready',
                 'reproduction_count' => 0,
-                'created_at' => '2025-02-17 10:00:00',
+                'created_at' => '2024-02-17 10:00:00',
                 'updated_at' => '2025-02-17 10:00:00',
             ],
 
@@ -435,7 +435,7 @@ class ProductBatchSeeder extends Seeder
                 'notes' => 'cash',
                 'status' => 'ready',
                 'reproduction_count' => 0,
-                'created_at' => '2025-01-31 10:00:00',
+                'created_at' => '2024-01-31 10:00:00',
                 'updated_at' => '2025-01-31 10:00:00',
             ],
             [
@@ -461,7 +461,7 @@ class ProductBatchSeeder extends Seeder
                 'notes' => 'credit card',
                 'status' => 'ready',
                 'reproduction_count' => 0,
-                'created_at' => '2025-02-20 10:00:00',
+                'created_at' => '2024-02-20 10:00:00',
                 'updated_at' => '2025-02-20 10:00:00',
             ],
 
@@ -502,7 +502,7 @@ class ProductBatchSeeder extends Seeder
                 'notes' => 'credit card',
                 'status' => 'ready',
                 'reproduction_count' => 0,
-                'created_at' => '2025-02-23 10:00:00',
+                'created_at' => '2024-02-23 10:00:00',
                 'updated_at' => '2025-02-23 10:00:00',
             ],
 
@@ -517,7 +517,7 @@ class ProductBatchSeeder extends Seeder
                 'notes' => 'cash',
                 'status' => 'ready',
                 'reproduction_count' => 0,
-                'created_at' => '2025-02-06 10:00:00',
+                'created_at' => '2024-02-06 10:00:00',
                 'updated_at' => '2025-02-06 10:00:00',
             ],
             [
@@ -584,7 +584,7 @@ class ProductBatchSeeder extends Seeder
                 'notes' => 'credit card',
                 'status' => 'ready',
                 'reproduction_count' => 0,
-                'created_at' => '2025-03-01 10:00:00',
+                'created_at' => '2024-03-01 10:00:00',
                 'updated_at' => '2025-03-01 10:00:00',
             ],
 
@@ -748,7 +748,7 @@ class ProductBatchSeeder extends Seeder
                 'notes' => 'credit card',
                 'status' => 'ready',
                 'reproduction_count' => 0,
-                'created_at' => '2025-03-13 10:00:00',
+                'created_at' => '2025-06-13 10:00:00',
                 'updated_at' => '2025-03-13 10:00:00',
             ],
 
@@ -763,7 +763,7 @@ class ProductBatchSeeder extends Seeder
                 'notes' => 'cash',
                 'status' => 'ready',
                 'reproduction_count' => 0,
-                'created_at' => '2025-02-24 10:00:00',
+                'created_at' => '2025-06-24 10:00:00',
                 'updated_at' => '2025-02-24 10:00:00',
             ],
             [
@@ -776,7 +776,7 @@ class ProductBatchSeeder extends Seeder
                 'notes' => 'bank transfer',
                 'status' => 'ready',
                 'reproduction_count' => 0,
-                'created_at' => '2025-03-06 10:00:00',
+                'created_at' => '2025-06-06 10:00:00',
                 'updated_at' => '2025-03-06 10:00:00',
             ],
             [
@@ -789,7 +789,7 @@ class ProductBatchSeeder extends Seeder
                 'notes' => 'credit card',
                 'status' => 'ready',
                 'reproduction_count' => 0,
-                'created_at' => '2025-03-16 10:00:00',
+                'created_at' => '2025-06-16 10:00:00',
                 'updated_at' => '2025-03-16 10:00:00',
             ],
 
@@ -804,7 +804,7 @@ class ProductBatchSeeder extends Seeder
                 'notes' => 'cash',
                 'status' => 'ready',
                 'reproduction_count' => 0,
-                'created_at' => '2025-02-27 10:00:00',
+                'created_at' => '2025-06-27 10:00:00',
                 'updated_at' => '2025-02-27 10:00:00',
             ],
             [
@@ -830,7 +830,7 @@ class ProductBatchSeeder extends Seeder
                 'notes' => 'credit card',
                 'status' => 'ready',
                 'reproduction_count' => 0,
-                'created_at' => '2025-03-19 10:00:00',
+                'created_at' => '2025-06-19 10:00:00',
                 'updated_at' => '2025-03-19 10:00:00',
             ],
 

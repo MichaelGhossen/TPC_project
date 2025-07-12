@@ -135,7 +135,6 @@ class ProductSummaryReportController extends Controller
 
     public function generateSummaryReportForPeriod(string $type, $processDate)
     {
-//        [$dataStart, , ,] = $this->getPeriodBoundaries($type, $processDate);
         $expectedCreatedAt = $this->getExpectedCreatedAt($processDate, $type);
 
 
@@ -157,7 +156,6 @@ class ProductSummaryReportController extends Controller
                 ], $reportData));
             }
         }
-        $this->refreshAllReports();
     }
 
     public function getMonthlyProfit()
@@ -195,7 +193,14 @@ class ProductSummaryReportController extends Controller
             throw new Exception("Product not found");
         }
 
-        $data = $this->calculateReportData($product, $report->type, Carbon::parse($report->created_at));
+        $reportDate = Carbon::parse($report->created_at);
+        $processDate = match ($report->type) {
+            'daily' => $reportDate->copy()->subDay(),
+            'monthly' => $reportDate->copy()->subMonth(),
+            'yearly' => $reportDate->copy()->subYear(),
+        };
+
+        $data = $this->calculateReportData($product, $report->type, $processDate);
         $report->update($data);
     }
 
