@@ -27,7 +27,7 @@ class ActivityLogController extends Controller
         }
 
         if ($request->filled('event')) {
-            $query->where('event', 'like', '%' . $request->string('event')->escape() . '%');
+            $query->where('event', 'like', '%' . $request->string('event') . '%');
         }
 
         if ($request->filled('date_from')) {

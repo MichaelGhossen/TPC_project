@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use GPBMetadata\Google\Api\Auth;
 use Illuminate\Http\Request;
 use App\Models\ProductionSetting;
 use Illuminate\Validation\Rule;
@@ -14,7 +15,6 @@ class ProductionSettingController extends Controller
         return response()->json([
             'status' => 200,
             'data' => ProductionSetting::orderBy('year', 'desc')
-                ->orderBy('year', 'desc')
                 ->orderBy('month', 'desc')
                 ->get()
         ]);
@@ -23,7 +23,6 @@ class ProductionSettingController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'user_id' => 'required|exists:users,id',
             'total_production' => 'required|numeric|min:0.01',
             'type' => ['required', Rule::in(['real', 'estimated'])],
             'profit_ratio' => 'required|numeric|min:0|max:1',
@@ -31,6 +30,7 @@ class ProductionSettingController extends Controller
             'year' => 'required|integer|min:2000|max:2100',
             'notes' => 'nullable|string',
         ]);
+        $validated['user_id'] = \auth()->id();
         if (ProductionSetting::where('month', $validated['month'])
             ->where('year', $validated['year'])
             ->where('type', $validated['type'])
@@ -72,12 +72,8 @@ class ProductionSettingController extends Controller
         }
 
         $validated = $request->validate([
-            'user_id' => 'sometimes|exists:users,id',
             'total_production' => 'sometimes|numeric|min:0.01',
-            'type' => ['sometimes', Rule::in(['real', 'estimated'])],
             'profit_ratio' => 'sometimes|numeric|min:0|max:1',
-            'month' => 'sometimes|integer|min:1|max:12',
-            'year' => 'sometimes|integer|min:2000|max:2100',
             'notes' => 'nullable|string',
         ]);
 

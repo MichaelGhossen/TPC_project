@@ -33,4 +33,7 @@ class ProductSale extends BaseModel
     {
         return $this->belongsTo(User::class, 'user_id');
     }
+    public function profitLossReport(){
+        return $this->belongsTo(ProfitLossReport::class,'product_sale_id');
+    }
 }

@@ -33,8 +33,8 @@ Route::middleware(['auth:sanctum', 'active'])->group(function () {
     Route::get('/user/show/{id}', [UserController::class, 'show']);
 
     Route::get('/notifications', [NotificationController::class, 'index']);
-    Route::post('/notifications/read-all', [NotificationController::class, 'markAllAsRead']);
-    Route::post('/notifications/{id}/read', [NotificationController::class, 'markAsRead']);
+    Route::put('/notifications/read-all', [NotificationController::class, 'markAllAsRead']);
+    Route::put('/notifications/{id}/read', [NotificationController::class, 'markAsRead']);
 
     Route::get('/expense-categories', [ExpenseCategoryController::class, 'index']);
     Route::get('expense-categories/search', [ExpenseCategoryController::class, 'searchByName']);

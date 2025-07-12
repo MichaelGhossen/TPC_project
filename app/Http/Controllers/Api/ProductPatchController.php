@@ -93,16 +93,16 @@ class ProductPatchController extends Controller
     {
         $validated = $request->validate([
             'product_id' => 'required',
-            'quantity_in' => 'required|numeric|min:0.0001',
+            'quantity_in' => 'required|numeric|min:1',
             'notes' => 'nullable|string',
-            'status' => 'nullable|in:ready,needs_reproduction',
+            'status' => 'required|in:ready,needs_reproduction',
             'reproduction_count' => 'nullable|integer|min:0',
         ]);
 
         $userId = Auth::id();
         $product = Product::find($validated['product_id']);
         if (!$product) {
-            return response()->json(['status' => 404, 'message' => 'Not found'], 404);
+            return response()->json(['status' => 404, 'message' => 'Product Not found'], 404);
         }
 
         $qtyInKg = $validated['quantity_in'];
@@ -132,7 +132,7 @@ class ProductPatchController extends Controller
             return response()->json([
                 'status' => 201,
                 'message' => 'Product batch created (kg → units) and materials allocated.',
-                'data' => $batch->load('product'),
+                'data' => $batch->load('product','conversion'),
             ], 201);
 
         } catch (\Exception $e) {
@@ -153,14 +153,22 @@ class ProductPatchController extends Controller
         }
 
         $validated = $request->validate([
-            'quantity_in' => 'sometimes|numeric|min:0.0001',
+            'quantity_in' => 'sometimes|numeric|min:1',
             'notes' => 'nullable|string',
             'status' => 'nullable|in:ready,needs_reproduction',
             'reproduction_count' => 'nullable|integer|min:0',
         ]);
 
         $originalQtyIn = $batch->quantity_in;
+        $originalQtyOut = $batch->quantity_out;
         $newQtyIn = $validated['quantity_in'] ?? $batch->quantity_in;
+        if ($newQtyIn < $originalQtyOut) {
+            return response()->json([
+                "status" => 422,
+                'message' => 'Quantity in cannot be less that quantity out',
+                'quantity_out' => $originalQtyOut,
+            ]);
+        }
 
         $product = $batch->product;
         $weightPerUnit = $product->weight_per_unit;
@@ -174,7 +182,7 @@ class ProductPatchController extends Controller
 
                 $batch->real_cost = $totalCost;
                 $batch->quantity_in = $newQtyIn;
-                $batch->quantity_remaining = $newQtyIn;
+                $batch->quantity_remaining = $newQtyIn - $originalQtyOut;
             }
 
             $batch->notes = $validated['notes'] ?? $batch->notes;
@@ -188,7 +196,7 @@ class ProductPatchController extends Controller
             return response()->json([
                 'status' => 200,
                 'message' => 'Product batch updated successfully.',
-                'data' => $batch->load('product'),
+                'data' => $batch->load('product','conversion'),
             ]);
         } catch (\Exception $e) {
             DB::rollBack();
@@ -205,6 +213,14 @@ class ProductPatchController extends Controller
 
         if (!$batch) {
             return response()->json(['status' => 404, 'message' => 'Product batch not found'], 404);
+        }
+
+        $relativeConversions = Conversion::where('input_product_batch_id',$batch->product_batch_id)->get();
+        if (count($relativeConversions) > 0) {
+            return response()->json([
+                'status' => 404,
+                'message' => 'Cannot delete a batch used in production',
+            ]);
         }
 
         DB::beginTransaction();

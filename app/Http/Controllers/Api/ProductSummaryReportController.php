@@ -135,7 +135,7 @@ class ProductSummaryReportController extends Controller
 
     public function generateSummaryReportForPeriod(string $type, $processDate)
     {
-        [$dataStart, , ,] = $this->getPeriodBoundaries($type, $processDate);
+//        [$dataStart, , ,] = $this->getPeriodBoundaries($type, $processDate);
         $expectedCreatedAt = $this->getExpectedCreatedAt($processDate, $type);
 
 
@@ -157,6 +157,7 @@ class ProductSummaryReportController extends Controller
                 ], $reportData));
             }
         }
+        $this->refreshAllReports();
     }
 
     public function getMonthlyProfit()

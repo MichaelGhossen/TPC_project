@@ -28,4 +28,7 @@ class ProductBatch extends BaseModel
     {
         return $this->belongsTo(Product::class, 'product_id');
     }
+    public function conversion(){
+        return $this->hasMany(Conversion::class, 'output_product_batch_id');
+    }
 }

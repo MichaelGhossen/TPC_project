@@ -69,7 +69,7 @@ class ProductSaleController extends Controller
         $validated = $request->validate([
             'product_id' => 'required|exists:products,product_id',
             'product_batch_id' => 'required|exists:product_batches,product_batch_id',
-            'quantity_sold' => 'required|numeric|min:0.0001',
+            'quantity_sold' => 'required|numeric|min:1',
             'unit_price' => 'required|numeric|min:0',
             'customer' => 'nullable|string',
         ]);
